@@ -1,39 +1,51 @@
 ---
-description: Create a comprehensive strategic plan with structured task breakdown
-argument-hint: Describe what you need planned (e.g., "refactor authentication system", "implement microservices")
+description: Convert approved implementation plan into persistent task tracking structure
+argument-hint: Feature name matching your approved plan (e.g., "authentication-system", "microservices-refactor")
 ---
 
-You are an elite strategic planning specialist. Create a comprehensive, actionable plan for: $ARGUMENTS
+You are a task tracking specialist. Convert the approved implementation plan into a persistent three-file structure that survives context resets.
 
 ## Instructions
 
-1. **Analyze the request** and determine the scope of planning needed
-2. **Examine relevant files** in the codebase to understand current state
-3. **Create a structured plan** with:
-   - Executive Summary
-   - Current State Analysis
-   - Proposed Future State
-   - Implementation Phases (broken into sections)
-   - Detailed Tasks (actionable items with clear acceptance criteria)
-   - Risk Assessment and Mitigation Strategies
-   - Success Metrics
-   - Required Resources and Dependencies
-   - Timeline Estimates
+1. **Locate the approved plan**:
+   - Check `~/.claude/plans/` directory for recent plan files
+   - Look for the most recent plan file (by modification time)
+   - If no plan file exists, prompt: "No approved plan found. For complex features, I should enter plan mode first to create an implementation plan. Should I proceed with planning, or would you like to describe a simple task?"
+   - Read the approved plan content
 
-4. **Task Breakdown Structure**: 
-   - Each major section represents a phase or component
-   - Number and prioritize tasks within sections
-   - Include clear acceptance criteria for each task
-   - Specify dependencies between tasks
-   - Estimate effort levels (S/M/L/XL)
-
-5. **Create task management structure**:
+2. **Create task management structure**:
    - Create directory: `dev/active/[task-name]/` (relative to project root)
-   - Generate three files:
-     - `[task-name]-plan.md` - The comprehensive plan
-     - `[task-name]-context.md` - Key files, decisions, dependencies
-     - `[task-name]-tasks.md` - Checklist format for tracking progress
+   - Generate three files based on the approved plan:
+     - `[task-name]-plan.md` - Copy the approved plan from ~/.claude/plans/
+     - `[task-name]-context.md` - Initialize with SESSION PROGRESS tracking template
+     - `[task-name]-tasks.md` - Extract tasks from plan phases into checklist format
    - Include "Last Updated: YYYY-MM-DD" in each file
+
+3. **Initialize tracking sections**:
+
+   **In [task-name]-context.md:**
+   - SESSION PROGRESS section at the top:
+     ```markdown
+     ## SESSION PROGRESS (YYYY-MM-DD)
+
+     ### ✅ COMPLETED
+     (empty - will be filled during implementation)
+
+     ### 🟡 IN PROGRESS
+     (empty - will be updated as work begins)
+
+     ### ⚠️ BLOCKERS
+     (empty - will note any issues discovered)
+     ```
+   - Key Files section (extract from plan's file references)
+   - Important Decisions section (extract from plan's rationale)
+   - Quick Resume instructions
+
+   **In [task-name]-tasks.md:**
+   - Convert plan phases into checkbox sections
+   - Each task from plan becomes: `- [ ] Task description (File: path)`
+   - Add acceptance criteria below each task
+   - Use status indicators: ⏳ NOT STARTED, 🟡 IN PROGRESS, ✅ COMPLETE
 
 ## Quality Standards
 - Plans must be self-contained with all necessary context
@@ -48,4 +60,7 @@ You are an elite strategic planning specialist. Create a comprehensive, actionab
 - Reference `TROUBLESHOOTING.md` for common issues to avoid (if exists)
 - Use `dev/README.md` for task management guidelines (if exists)
 
-**Note**: This command is ideal to use AFTER exiting plan mode when you have a clear vision of what needs to be done. It will create the persistent task structure that survives context resets.
+**Workflow Integration:**
+- For complex features: Claude enters plan mode → creates plan in `~/.claude/plans/` → user approves → `/dev-docs` converts to persistent tracking
+- The plan files in `~/.claude/plans/` are session-scoped. This command persists them to `dev/active/` for context reset survival.
+- Update progress frequently with `/dev-docs-update` command during implementation.

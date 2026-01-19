@@ -1,5 +1,5 @@
 {
-  "enableAllProjectMcpServers": true,
+  "enableAllProjectMcpServers": false,
   "enabledMcpjsonServers": [],
   "permissions": {
     "allow": [

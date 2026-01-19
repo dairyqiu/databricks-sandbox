@@ -2,18 +2,20 @@
 
 ## Proactive Agent Invocation
 
-Claude MUST invoke these agents automatically (no user prompt needed):
+Claude MUST invoke these tools/agents automatically (no user prompt needed):
 
-| Trigger | Agent | Timing |
-|---------|-------|--------|
-| Complex feature request | **planner** | Before implementation |
+| Trigger | Tool/Agent | Timing |
+|---------|------------|--------|
+| Complex feature request | **EnterPlanMode** (built-in) | Before implementation |
 | Code written/modified | **code-reviewer** | Immediately after changes |
 | New feature or bug fix | **tdd-guide** | Before writing implementation |
 | Architectural decision | **architect** | When design choices arise |
 | Build failure | **build-error-resolver** | When build/compile fails |
 | Security-sensitive code | **security-reviewer** | Before committing auth/input handling |
 
-**Critical:** These are behavioral requirements. Claude should invoke agents without asking permission.
+**Critical:** These are behavioral requirements. Claude should invoke tools/agents without asking permission.
+
+**Note on Planning:** For complex features, Claude uses the built-in `EnterPlanMode` tool which creates structured plans in `~/.claude/plans/`. After approval, use `/dev-docs` to convert the plan into persistent task tracking.
 
 ---
 
@@ -51,11 +53,12 @@ First agent 1, then agent 2, then agent 3
 
 ### Planning Workflow
 ```
-architect → planner → plan-reviewer → execute
+EnterPlanMode (built-in) → ExitPlanMode (approval) → /dev-docs → execute
 ```
-- **architect**: Determine system design approach
-- **planner**: Create detailed implementation plan
-- **plan-reviewer**: Validate plan before execution
+- **EnterPlanMode**: Built-in tool creates structured implementation plan
+- **ExitPlanMode**: User approves plan before proceeding
+- **/dev-docs**: Converts approved plan into persistent task tracking
+- **architect**: Optional - for complex architectural decisions before planning
 
 ### Refactoring Workflow
 ```
@@ -103,6 +106,8 @@ For complex decisions, use split-role sub-agents:
 
 For full agent descriptions and capabilities, see [../agents/README.md](../agents/README.md)
 
-**Universal agents (12):** planner, architect, plan-reviewer, code-reviewer, code-architecture-reviewer, refactor-planner, code-refactor-master, security-reviewer, tdd-guide, build-error-resolver, documentation-architect, web-research-specialist
+**Universal agents (11):** architect, plan-reviewer, code-reviewer, code-architecture-reviewer, refactor-planner, code-refactor-master, security-reviewer, tdd-guide, build-error-resolver, documentation-architect, web-research-specialist
+
+**Built-in Planning:** Claude Code's native `EnterPlanMode` tool replaces the custom planner agent. Plans are saved to `~/.claude/plans/`.
 
 **Optional agents:** See `optional-components/agents/` for domain-specific agents

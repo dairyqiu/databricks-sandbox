@@ -229,21 +229,51 @@ No need to explain what you were doing - it's all documented!
 
 ---
 
-## Integration with Slash Commands
+## Integration with Built-in Plan Mode
+
+### Planning Workflow
+
+**Recommended workflow for complex features:**
+
+1. **Start with plan mode (automatic):**
+   ```
+   User: "I need to implement real-time notifications"
+   ```
+   - Claude automatically enters plan mode for complex features
+   - Creates detailed implementation plan
+   - Saves to `~/.claude/plans/[session-id].md`
+   - User reviews and approves
+   - Plan lives in session context only
+
+2. **Persist with /dev-docs:**
+   ```
+   /dev-docs implement-real-time-notifications
+   ```
+   - Reads the approved plan from `~/.claude/plans/`
+   - Converts it into three-file structure
+   - Saves to `dev/active/implement-real-time-notifications/`
+   - Survives context resets
+   - Enables progress tracking
+
+**Why two steps?**
+- **Plan mode** = Collaborative planning with user approval (session-scoped)
+- **/dev-docs** = Persistent task tracking across sessions (context-proof)
+- Together they bridge session boundaries
 
 ### /dev-docs
-**Creates:** New dev docs for a task
+**Creates:** Persistent dev docs from approved plan
 
 **Usage:**
 ```
 /dev-docs implement real-time notifications
 ```
 
-**Generates:**
-- `dev/active/implement-real-time-notifications/`
-  - implement-real-time-notifications-plan.md
-  - implement-real-time-notifications-context.md
-  - implement-real-time-notifications-tasks.md
+**What it does:**
+- Looks for approved plan in `~/.claude/plans/`
+- Generates three-file structure in `dev/active/implement-real-time-notifications/`:
+  - implement-real-time-notifications-plan.md (copied from ~/.claude/plans/)
+  - implement-real-time-notifications-context.md (SESSION PROGRESS template)
+  - implement-real-time-notifications-tasks.md (checklist from plan)
 
 ### /dev-docs-update
 **Updates:** Existing dev docs before context reset

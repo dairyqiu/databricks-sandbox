@@ -1,8 +1,10 @@
 # Universal Slash Commands
 
-**Six essential commands available in the base template**
+**Five essential commands available in the base template**
 
 These commands work across ALL projects regardless of tech stack - AI research, web apps, Mac apps, data science, etc.
+
+**Note:** Planning now uses Claude Code's built-in plan mode (EnterPlanMode) instead of a custom `/plan` command.
 
 ---
 
@@ -12,25 +14,30 @@ These commands work across ALL projects regardless of tech stack - AI research, 
 
 #### /dev-docs
 
-**Purpose:** Create development documentation for tracking complex features
+**Purpose:** Convert approved plan into persistent task tracking structure
 
 **Usage:**
 ```
-/dev-docs implement real-time notifications
+/dev-docs implement-real-time-notifications
 ```
 
 **What It Does:**
+- Reads approved plan from `~/.claude/plans/` (created by built-in plan mode)
 - Creates a `dev/active/[task-name]/` directory
 - Generates three files:
-  - `[task-name]-plan.md` - Strategic implementation plan
-  - `[task-name]-context.md` - Key decisions and current progress
-  - `[task-name]-tasks.md` - Checklist of tasks
+  - `[task-name]-plan.md` - Copies the approved plan
+  - `[task-name]-context.md` - SESSION PROGRESS tracking template
+  - `[task-name]-tasks.md` - Checklist extracted from plan
 
 **When to Use:**
-- Complex multi-day tasks
-- Features with many moving parts
-- Work spanning multiple sessions
-- Tasks needing careful planning
+- After Claude creates and you approve a plan in plan mode
+- To persist session-scoped plans for context reset survival
+- Complex multi-day tasks spanning multiple sessions
+
+**Workflow:**
+1. Claude enters plan mode for complex features (automatic)
+2. You approve the plan
+3. Run `/dev-docs [feature-name]` to persist it
 
 **Learn More:** See [../../dev/README.md](../../dev/README.md)
 
@@ -60,30 +67,7 @@ These commands work across ALL projects regardless of tech stack - AI research, 
 
 ---
 
-### Planning & Architecture
-
-#### /plan
-
-**Purpose:** Create comprehensive implementation plans for complex features
-
-**Usage:**
-```
-/plan add user authentication
-```
-
-**What It Does:**
-- Invokes the **planner agent** (uses Opus model)
-- Four-phase planning (Understanding → Analysis → Design → Validation)
-- Considers dependencies and risks
-- Provides step-by-step implementation approach
-
-**When to Use:**
-- Complex features with multiple parts
-- Architectural decisions needed
-- Uncertain implementation approach
-- High-risk changes
-
----
+### Code Quality
 
 #### /code-review
 
@@ -160,12 +144,13 @@ These commands work across ALL projects regardless of tech stack - AI research, 
 
 ## Why These Are in Base Template
 
-These 6 commands are **universal** - they apply to ALL project types:
-- **Development tracking** (/dev-docs, /dev-docs-update) - Essential for context management
-- **Planning** (/plan) - Every project needs implementation planning
+These 5 commands are **universal** - they apply to ALL project types:
+- **Development tracking** (/dev-docs, /dev-docs-update) - Essential for context management across sessions
 - **Code quality** (/code-review) - Universal across all languages
 - **Testing** (/tdd) - Test-driven development applies everywhere
 - **Build troubleshooting** (/build-fix) - All projects have builds
+
+**Note on Planning:** Claude Code's built-in plan mode (EnterPlanMode) handles planning automatically for complex features. No custom command needed.
 
 They work regardless of:
 - Programming language (Python, TypeScript, Swift, Go, etc.)
@@ -215,7 +200,7 @@ For domain-specific commands, see [../../optional-components/commands/README.md]
 **Research:**
 - `/route-research` - Research API routes for testing
 
-**Note:** The 4 most universal commands (/plan, /code-review, /tdd, /build-fix) have been moved to the base template above.
+**Note:** The most universal commands (/code-review, /tdd, /build-fix, /dev-docs) are in the base template above. Planning uses built-in plan mode.
 
 ---
 

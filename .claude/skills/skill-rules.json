@@ -25,6 +25,36 @@
         ]
       }
     },
+    "agent-developer": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Meta-skill for creating and managing Claude Code agents",
+      "promptTriggers": {
+        "keywords": [
+          "agent system",
+          "create agent",
+          "add agent",
+          "sub-agent",
+          "subagent",
+          "multi-agent",
+          "agent workflow",
+          "agent chaining",
+          "Task tool",
+          "model selection",
+          "haiku",
+          "sonnet",
+          "opus"
+        ],
+        "intentPatterns": [
+          "(how do|how does|explain).*?agent",
+          "(create|add|modify|build).*?agent",
+          "agent.*?(work|trigger|activate|pattern)",
+          "(parallel|sequential).*?agent",
+          "(when|which).*?model"
+        ]
+      }
+    },
     "coding-standards": {
       "type": "quality",
       "enforcement": "suggest",
@@ -77,7 +107,7 @@
     }
   },
   "notes": {
-    "setup": "Universal base configuration with 3 skills. Add project-specific skills from optional-components/skills/ as needed.",
+    "setup": "Universal base configuration with 4 skills. Add project-specific skills from optional-components/skills/ as needed.",
     "enforcement_types": {
       "suggest": "Skill suggestion appears but doesn't block execution",
       "block": "Requires skill to be used before proceeding (guardrail)",

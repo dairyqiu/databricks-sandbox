@@ -6,11 +6,20 @@ This is the base template for Claude Code projects with universal skills, agents
 ## Available Commands
 | Command | Purpose |
 |---------|---------|
-| `/dev-docs [task]` | Create development documentation |
-| `/plan [feature]` | Create implementation plan |
+| `/dev-docs [task]` | Convert approved plan to persistent task tracking |
+| `/dev-docs-update` | Update task progress before context reset |
 | `/code-review` | Review recent code changes |
 | `/tdd [feature]` | Test-driven development workflow |
 | `/build-fix` | Fix build/compilation errors |
+| `/create-skill [name]` | Interactive wizard to scaffold a new skill |
+| `/create-agent [name]` | Interactive wizard to scaffold a new agent |
+
+## Planning Workflow
+For complex features, Claude proactively uses built-in plan mode:
+1. **Plan** - Claude enters plan mode → Creates plan in `~/.claude/plans/` → You approve
+2. **Persist** - `/dev-docs [feature]` → Converts plan to tracking structure in `dev/active/`
+3. **Implement** - `/tdd` → Build with tests (update context with `/dev-docs-update`)
+4. **Document** - `documentation-architect` agent → Create reference docs
 
 ## Active Rules (Always Enforced)
 - **Security**: No hardcoded secrets, validate all inputs ([.claude/rules/security.md](.claude/rules/security.md))
@@ -26,7 +35,7 @@ Skills suggest themselves based on context:
 
 ## Agents (Auto-Invoke)
 Claude delegates to specialized agents:
-- Complex features → planner agent
+- Complex features → Built-in plan mode (EnterPlanMode)
 - After writing code → code-reviewer agent
 - Security concerns → security-reviewer agent
 - Build failures → build-error-resolver agent
@@ -37,7 +46,7 @@ Claude delegates to specialized agents:
 ├── skills/          # Domain knowledge (auto-activates)
 ├── rules/           # Behavioral guidelines (always active)
 ├── agents/          # Specialized task handlers (auto-invoked)
-├── commands/        # Slash commands (/dev-docs, /plan, etc.)
+├── commands/        # Slash commands (/dev-docs, /tdd, etc.)
 └── hooks/           # Automation scripts (skill activation, tracking)
 ```
 
