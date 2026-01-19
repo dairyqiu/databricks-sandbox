@@ -1,368 +1,360 @@
-# Skills
+# Universal Skills
 
-Production-tested skills for Claude Code that auto-activate based on context.
-
----
-
-## What Are Skills?
-
-Skills are modular knowledge bases that Claude loads when needed. They provide:
-- Domain-specific guidelines
-- Best practices
-- Code examples
-- Anti-patterns to avoid
-
-**Problem:** Skills don't activate automatically by default.
-
-**Solution:** This showcase includes the hooks + configuration to make them activate.
+Three skills that apply to ALL project types - AI research, web apps, Mac apps, data science, etc.
 
 ---
 
-## Available Skills
+## What's Included
 
-### skill-developer (Meta-Skill)
-**Purpose:** Creating and managing Claude Code skills
+This directory contains **3 universal skills**:
 
-**Files:** 7 resource files (426 lines total)
+1. **skill-developer/** - Meta-skill for creating and managing skills
+2. **coding-standards/** - TypeScript coding standards and best practices
+3. **tdd-workflow/** - Test-driven development methodology
 
-**Use when:**
-- Creating new skills
-- Understanding skill structure
-- Working with skill-rules.json
-- Debugging skill activation
-
-**Customization:** ✅ None - copy as-is
-
-**[View Skill →](skill-developer/)**
+These skills provide universal quality practices that work regardless of tech stack. Domain-specific skills (backend-dev-guidelines, frontend-dev-guidelines) remain in optional-components.
 
 ---
 
-### backend-dev-guidelines
-**Purpose:** Node.js/Express/TypeScript development patterns
+## skill-developer
 
-**Files:** 12 resource files (304 lines main + resources)
+**Purpose:** Helps you create, modify, and understand the skill system itself.
 
-**Covers:**
-- Layered architecture (Routes → Controllers → Services → Repositories)
-- BaseController pattern
-- Prisma database access
-- Sentry error tracking
-- Zod validation
-- UnifiedConfig pattern
-- Dependency injection
-- Testing strategies
+**When it activates:** When you mention "skill", "create skill", "skill triggers", etc.
 
-**Use when:**
-- Creating/modifying API routes
-- Building controllers or services
-- Database operations with Prisma
-- Setting up error tracking
+**What it provides:**
+- Skill system architecture
+- How to create new skills
+- skill-rules.json configuration
+- Hook integration patterns
+- Progressive disclosure (500-line rule)
+- Troubleshooting guide
 
-**Customization:** ⚠️ Update `pathPatterns` in skill-rules.json to match your backend directories
-
-**Example pathPatterns:**
-```json
-{
-  "pathPatterns": [
-    "src/api/**/*.ts",       // Single app with src/api
-    "backend/**/*.ts",       // Backend directory
-    "services/*/src/**/*.ts" // Multi-service monorepo
-  ]
-}
-```
-
-**[View Skill →](backend-dev-guidelines/)**
+**Use it for:**
+- Creating custom skills for your project
+- Understanding how auto-activation works
+- Debugging skill trigger issues
+- Learning the modular skill pattern
 
 ---
 
-### frontend-dev-guidelines
-**Purpose:** React/TypeScript/MUI v7 development patterns
+## coding-standards
 
-**Files:** 11 resource files (398 lines main + resources)
+**Purpose:** Provides TypeScript coding standards and best practices.
 
-**Covers:**
-- Modern React patterns (Suspense, lazy loading)
-- useSuspenseQuery for data fetching
-- MUI v7 styling (Grid with `size={{}}` prop)
-- TanStack Router
-- File organization (features/ pattern)
-- Performance optimization
+**When it activates:** When you mention "code quality", "standards", "refactor", "clean code", etc.
+
+**What it provides:**
 - TypeScript best practices
+- Naming conventions
+- File organization principles
+- Code structure guidelines
+- SOLID principles
+- DRY, KISS, YAGNI patterns
 
-**Use when:**
-- Creating React components
-- Fetching data with TanStack Query
-- Styling with MUI v7
-- Setting up routing
+**Use it for:**
+- Maintaining code quality
+- Refactoring existing code
+- Establishing team standards
+- Code review guidelines
 
-**Customization:** ⚠️ Update `pathPatterns` + verify you use React/MUI
-
-**Example pathPatterns:**
-```json
-{
-  "pathPatterns": [
-    "src/**/*.tsx",          // Single React app
-    "frontend/src/**/*.tsx", // Frontend directory
-    "apps/web/**/*.tsx"      // Monorepo web app
-  ]
-}
-```
-
-**Note:** This skill is configured as a **guardrail** (enforcement: "block") to prevent MUI v6→v7 incompatibilities.
-
-**[View Skill →](frontend-dev-guidelines/)**
+**Size:** Single file (~300 lines)
 
 ---
 
-### route-tester
-**Purpose:** Testing authenticated API routes with JWT cookie auth
+## tdd-workflow
 
-**Files:** 1 main file (389 lines)
+**Purpose:** Enforces test-driven development methodology with 80% minimum coverage.
 
-**Covers:**
-- JWT cookie-based authentication testing
-- test-auth-route.js script patterns
-- cURL with cookie authentication
-- Debugging auth issues
-- Testing POST/PUT/DELETE operations
+**When it activates:** When you mention "TDD", "test first", "testing", or work with test files.
 
-**Use when:**
-- Testing API endpoints
-- Debugging authentication
-- Validating route functionality
+**What it provides:**
+- RED → GREEN → REFACTOR cycle
+- Test structure (AAA pattern: Arrange, Act, Assert)
+- Writing effective tests
+- Mocking and stubbing strategies
+- Test coverage analysis
+- Integration vs unit tests
+- E2E testing strategies
+- Debugging test failures
 
-**Customization:** ⚠️ Requires JWT cookie auth setup
+**Use it for:**
+- Implementing new features test-first
+- Fixing bugs with regression tests
+- Ensuring adequate test coverage
+- Learning TDD methodology
 
-**Ask first:** "Do you use JWT cookie-based authentication?"
-- If YES: Copy and customize service URLs
-- If NO: Skip or adapt for your auth method
+**Size:** Modular (SKILL.md + 3 resource files)
 
-**[View Skill →](route-tester/)**
-
----
-
-### error-tracking
-**Purpose:** Sentry error tracking and monitoring patterns
-
-**Files:** 1 main file (~250 lines)
-
-**Covers:**
-- Sentry v8 initialization
-- Error capture patterns
-- Breadcrumbs and user context
-- Performance monitoring
-- Integration with Express and React
-
-**Use when:**
-- Setting up error tracking
-- Capturing exceptions
-- Adding error context
-- Debugging production issues
-
-**Customization:** ⚠️ Update `pathPatterns` for your backend
-
-**[View Skill →](error-tracking/)**
+**File Triggers:** Automatically activates when editing:
+- `**/*.test.ts`
+- `**/*.spec.ts`
+- `**/__tests__/**`
+- `**/tests/**`
 
 ---
 
-## How to Add a Skill to Your Project
+## skill-rules.json
 
-### Quick Integration
+This file controls **which skills auto-activate** and **when**. The base configuration includes 3 universal skills:
 
-**For Claude Code:**
-```
-User: "Add the backend-dev-guidelines skill to my project"
-
-Claude should:
-1. Ask about project structure
-2. Copy skill directory
-3. Update skill-rules.json with their paths
-4. Verify integration
-```
-
-See [CLAUDE_INTEGRATION_GUIDE.md](../../CLAUDE_INTEGRATION_GUIDE.md) for complete instructions.
-
-### Manual Integration
-
-**Step 1: Copy the skill directory**
-```bash
-cp -r claude-code-infrastructure-showcase/.claude/skills/backend-dev-guidelines \\
-      your-project/.claude/skills/
-```
-
-**Step 2: Update skill-rules.json**
-
-If you don't have one, create it:
-```bash
-cp claude-code-infrastructure-showcase/.claude/skills/skill-rules.json \\
-   your-project/.claude/skills/
-```
-
-Then customize the `pathPatterns` for your project:
 ```json
 {
   "skills": {
-    "backend-dev-guidelines": {
+    "skill-developer": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["skill system", "create skill", "add skill"],
+        "intentPatterns": ["(create|add|modify).*?skill"]
+      }
+    },
+    "coding-standards": {
+      "type": "quality",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["code quality", "standards", "refactor", "clean code"],
+        "intentPatterns": ["(improve|refactor).*?(code|structure)"]
+      }
+    },
+    "tdd-workflow": {
+      "type": "methodology",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["TDD", "test driven", "test first", "testing"],
+        "intentPatterns": ["(implement|add|create).*?feature"]
+      },
       "fileTriggers": {
-        "pathPatterns": [
-          "YOUR_BACKEND_PATH/**/*.ts"  // ← Update this!
-        ]
+        "pathPatterns": ["**/*.test.ts", "**/*.spec.ts", "**/__tests__/**"]
       }
     }
   }
 }
 ```
 
-**Step 3: Test**
-- Edit a file in your backend directory
-- The skill should activate automatically
+### Adding Skills
 
----
+When you copy skills from [optional-components/skills/](../../optional-components/skills/), add their trigger configurations here.
 
-## skill-rules.json Configuration
-
-### What It Does
-
-Defines when skills should activate based on:
-- **Keywords** in user prompts ("backend", "API", "route")
-- **Intent patterns** (regex matching user intent)
-- **File path patterns** (editing backend files)
-- **Content patterns** (code contains Prisma queries)
-
-### Configuration Format
+**Example - Adding backend-dev-guidelines:**
 
 ```json
 {
-  "skill-name": {
-    "type": "domain" | "guardrail",
-    "enforcement": "suggest" | "block",
-    "priority": "high" | "medium" | "low",
-    "promptTriggers": {
-      "keywords": ["list", "of", "keywords"],
-      "intentPatterns": ["regex patterns"]
-    },
-    "fileTriggers": {
-      "pathPatterns": ["path/to/files/**/*.ts"],
-      "contentPatterns": ["import.*Prisma"]
+  "skills": {
+    "skill-developer": { ... },
+    "backend-dev-guidelines": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["backend", "API", "route", "controller", "service"],
+        "intentPatterns": ["(create|add).*?(route|endpoint|API)"]
+      },
+      "fileTriggers": {
+        "pathPatterns": ["backend/**/*.ts", "api/**/*.ts"],
+        "contentPatterns": ["router\\.", "export.*Controller"]
+      }
     }
   }
 }
 ```
 
+See [optional-components/skills/README.md](../../optional-components/skills/README.md) for pre-made configurations.
+
+---
+
+## Optional Domain-Specific Skills
+
+Browse [optional-components/skills/](../../optional-components/skills/) for **9 domain-specific skills**:
+
+### Backend Development
+- **backend-dev-guidelines** - Node.js/Express/Prisma patterns
+- **backend-patterns** - API design, caching, queuing, microservices
+- **route-tester** - JWT cookie authentication testing
+
+### Frontend Development
+- **frontend-dev-guidelines** - React/MUI v7 patterns
+- **frontend-patterns** - React composition, custom hooks, performance
+
+### Security
+- **security-review** - Security checklist and OWASP Top 10
+
+### Databases
+- **clickhouse-io** - ClickHouse analytics queries
+- **error-tracking** - Sentry integration patterns
+
+**Note:** The 2 most universal skills (coding-standards, tdd-workflow) have been moved to the base template above.
+
+---
+
+## How Skills Work
+
+### Trigger System
+
+Skills auto-activate based on three trigger types:
+
+1. **Keyword Triggers** - Match specific words in your prompt
+   ```json
+   "keywords": ["backend", "API", "route"]
+   ```
+
+2. **Intent Pattern Triggers** - Match regex patterns for user intent
+   ```json
+   "intentPatterns": ["(create|add).*?(route|API)"]
+   ```
+
+3. **File Triggers** - Match file paths or content patterns
+   ```json
+   "fileTriggers": {
+     "pathPatterns": ["backend/**/*.ts"],
+     "contentPatterns": ["router\\."]
+   }
+   ```
+
 ### Enforcement Levels
 
-- **suggest**: Skill appears as suggestion, doesn't block
-- **block**: Must use skill before proceeding (guardrail)
+- **suggest** - Skill appears as suggestion (non-blocking)
+- **block** - Requires skill use before proceeding (guardrail)
+- **warn** - Shows warning but allows proceeding
 
-**Use "block" for:**
-- Preventing breaking changes (MUI v6→v7)
-- Critical database operations
-- Security-sensitive code
+### Priority Levels
 
-**Use "suggest" for:**
-- General best practices
-- Domain guidance
-- Code organization
+- **critical** - Always trigger when matched
+- **high** - Trigger for most matches
+- **medium** - Trigger for clear matches
+- **low** - Trigger only for explicit matches
 
 ---
 
-## Creating Your Own Skills
+## Modular Skill Pattern (500-Line Rule)
 
-See the **skill-developer** skill for complete guide on:
-- Skill YAML frontmatter structure
-- Resource file organization
-- Trigger pattern design
-- Testing skill activation
+Skills larger than 500 lines use the modular pattern:
 
-**Quick template:**
-```markdown
+```
+skill-name/
+  SKILL.md                  # <500 lines - Overview + navigation
+  resources/
+    topic-1.md              # <500 lines each
+    topic-2.md
+    topic-3.md
+```
+
+**Why?**
+- Large skills hit context limits
+- Progressive disclosure keeps context manageable
+- Claude loads main file, then resources only when needed
+
+**Example:** backend-dev-guidelines has 12 resource files covering routing, controllers, services, testing, etc.
+
 ---
-name: my-skill
-description: What this skill does
+
+## Integration Workflow
+
+### 1. Choose a Skill
+
+Browse [optional-components/skills/](../../optional-components/skills/) and pick what you need.
+
+### 2. Copy the Skill
+
+```bash
+cp -r optional-components/skills/backend-dev-guidelines/ .claude/skills/
+```
+
+### 3. Add to skill-rules.json
+
+Copy the trigger configuration from [optional-components/skills/README.md](../../optional-components/skills/README.md) and add to [skill-rules.json](skill-rules.json).
+
+### 4. Test It
+
+- Type a trigger keyword (e.g., "backend") - skill should suggest
+- Edit a matching file (e.g., `api/routes/users.ts`) - skill should activate
+- Use the skill to verify it loads correctly
+
 ---
 
-# My Skill Title
+## Customization
 
-## Purpose
-[Why this skill exists]
+### Update Path Patterns
 
-## When to Use This Skill
-[Auto-activation scenarios]
+Match your project structure:
 
-## Quick Reference
-[Key patterns and examples]
+```json
+"fileTriggers": {
+  "pathPatterns": [
+    "src/api/**/*.ts",        // Your actual paths
+    "server/routes/**/*.ts"
+  ]
+}
+```
 
-## Resource Files
-- [topic-1.md](resources/topic-1.md)
-- [topic-2.md](resources/topic-2.md)
+### Add Domain Keywords
+
+Include your specific terminology:
+
+```json
+"keywords": [
+  "backend",
+  "API",
+  "YourFramework",          // Your framework
+  "YourDatabase"            // Your database
+]
+```
+
+### Adjust Intent Patterns
+
+Match how your team talks:
+
+```json
+"intentPatterns": [
+  "(build|create|make).*?(endpoint|route)",
+  "add.*?(API|service)"
+]
 ```
 
 ---
 
 ## Troubleshooting
 
-### Skill isn't activating
+### Skill not auto-suggesting
 
-**Check:**
-1. Is skill directory in `.claude/skills/`?
-2. Is skill listed in `skill-rules.json`?
-3. Do `pathPatterns` match your files?
-4. Are hooks installed and working?
-5. Is settings.json configured correctly?
+1. **Check skill-rules.json** - Is skill configured with triggers?
+2. **Verify keywords** - Does your prompt include trigger keywords?
+3. **Test manually** - Use Skill tool directly to verify skill works
+4. **Check hook** - Is skill-activation-prompt hook running?
 
-**Debug:**
-```bash
-# Check skill exists
-ls -la .claude/skills/
+### Skill loads but doesn't help
 
-# Validate skill-rules.json
-cat .claude/skills/skill-rules.json | jq .
+1. **Review SKILL.md** - Does it cover your use case?
+2. **Check resources** - Try loading specific resource files
+3. **Update skill** - May need customization for your tech stack
 
-# Check hooks are executable
-ls -la .claude/hooks/*.sh
+### Context limits hit
 
-# Test hook manually
-./.claude/hooks/skill-activation-prompt.sh
+1. **Use modular pattern** - Break large skills into resources
+2. **Reference selectively** - Load only needed resource files
+3. **Keep SKILL.md under 500 lines** - Overview only
+
+---
+
+## File Structure
+
+```
+skills/
+├── skill-developer/        # Meta-skill (universal)
+│   ├── SKILL.md           # Main skill file
+│   └── resources/         # 7 resource files
+├── skill-rules.json       # Trigger configuration
+└── README.md              # This file
 ```
 
-### Skill activates too often
-
-Update skill-rules.json:
-- Make keywords more specific
-- Narrow `pathPatterns`
-- Increase specificity of `intentPatterns`
-
-### Skill never activates
-
-Update skill-rules.json:
-- Add more keywords
-- Broaden `pathPatterns`
-- Add more `intentPatterns`
-
 ---
 
-## For Claude Code
+## Learn More
 
-**When integrating a skill for a user:**
-
-1. **Read [CLAUDE_INTEGRATION_GUIDE.md](../../CLAUDE_INTEGRATION_GUIDE.md)** first
-2. Ask about their project structure
-3. Customize `pathPatterns` in skill-rules.json
-4. Verify the skill file has no hardcoded paths
-5. Test activation after integration
-
-**Common mistakes:**
-- Keeping example paths (blog-api/, frontend/)
-- Not asking about monorepo vs single-app
-- Copying skill-rules.json without customization
-
----
-
-## Next Steps
-
-1. **Start simple:** Add one skill that matches your work
-2. **Verify activation:** Edit a relevant file, skill should suggest
-3. **Add more:** Once first skill works, add others
-4. **Customize:** Adjust triggers based on your workflow
-
-**Questions?** See [CLAUDE_INTEGRATION_GUIDE.md](../../CLAUDE_INTEGRATION_GUIDE.md) for comprehensive integration instructions.
+- **Optional skills:** [../../optional-components/skills/README.md](../../optional-components/skills/README.md)
+- **Hooks:** [../hooks/README.md](../hooks/README.md)
+- **Main guide:** [../../README.md](../../README.md)
+- **Setup guide:** [../../TEMPLATE_SETUP_GUIDE.md](../../TEMPLATE_SETUP_GUIDE.md)

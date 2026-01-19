@@ -1,300 +1,481 @@
-# Agents
+# Universal Agents
 
-Specialized agents for complex, multi-step tasks.
-
----
-
-## What Are Agents?
-
-Agents are autonomous Claude instances that handle specific complex tasks. Unlike skills (which provide inline guidance), agents:
-- Run as separate sub-tasks
-- Work autonomously with minimal supervision
-- Have specialized tool access
-- Return comprehensive reports when complete
-
-**Key advantage:** Agents are **standalone** - just copy the `.md` file and use immediately!
+Twelve agents useful across ALL project types - AI research, web apps, Mac apps, data science, etc.
 
 ---
 
-## Available Agents (10)
+## What's Included
+
+This directory contains **12 universal agents** that work regardless of tech stack:
+
+### Planning & Architecture (3 agents)
+1. **planner** - Four-phase implementation planning for complex features
+2. **architect** - System design and architectural decision-making
+3. **plan-reviewer** - Review development plans before implementation
+
+### Code Quality (4 agents)
+4. **code-reviewer** - Comprehensive code review with severity levels
+5. **code-architecture-reviewer** - Review code for architectural consistency
+6. **refactor-planner** - Create detailed refactoring strategies
+7. **code-refactor-master** - Plan and execute refactoring
+
+### Security & Testing (2 agents)
+8. **security-reviewer** - Security vulnerability analysis (OWASP Top 10)
+9. **tdd-guide** - Test-driven development enforcement
+
+### Build & Documentation (2 agents)
+10. **build-error-resolver** - Build and compilation error troubleshooting
+11. **documentation-architect** - Generate comprehensive documentation
+
+### Research (1 agent)
+12. **web-research-specialist** - Research technical issues online
+
+These agents are **standalone** - just use them. No customization needed.
+
+**Philosophy:** These agents provide value across ALL project types. Domain-specific agents (like auth-route-tester) remain in optional-components.
+
+---
+
+## Agent Descriptions
+
+### Planning & Architecture Agents
+
+#### planner
+
+**Use when:** You have a complex feature to implement and need a comprehensive plan.
+
+**What it does:**
+- Four-phase planning (Understanding → Analysis → Design → Validation)
+- Breaks down complex tasks
+- Considers dependencies and risks
+- Provides step-by-step implementation approach
+- Uses Opus model for deep reasoning
+
+**Example:**
+```
+User: "Add user authentication to the app"
+Assistant: Uses planner agent for four-phase implementation plan
+```
+
+#### architect
+
+**Use when:** You need to make system design decisions or choose between architectural approaches.
+
+**What it does:**
+- Evaluates design patterns
+- Recommends architectural solutions
+- Considers scalability and maintainability
+- Analyzes trade-offs between approaches
+- Provides technical justification
+
+**Example:**
+```
+User: "Should we use REST or GraphQL for our API?"
+Assistant: Uses architect agent to evaluate approaches
+```
+
+#### plan-reviewer
+
+**Use when:** You have a development plan that needs review before implementation.
+
+**What it does:**
+- Analyzes proposed plans
+- Identifies potential issues
+- Suggests missing considerations
+- Evaluates alternative approaches
+- Validates assumptions
+
+**Example:**
+```
+User: "Review this plan before I start implementation"
+Assistant: Uses plan-reviewer to analyze and provide feedback
+```
+
+### Code Quality Agents
+
+#### code-reviewer
+
+**Use when:** You've written code and want comprehensive review with severity levels.
+
+**What it does:**
+- Reviews code for quality and security
+- Categorizes issues (CRITICAL, HIGH, MEDIUM, LOW)
+- Checks best practices
+- Identifies potential bugs
+- Suggests improvements
+
+**Example:**
+```
+User: "Review this authentication implementation"
+Assistant: Uses code-reviewer for comprehensive analysis
+```
 
 ### code-architecture-reviewer
-**Purpose:** Review code for architectural consistency and best practices
 
-**When to use:**
-- After implementing a new feature
-- Before merging significant changes
-- When refactoring code
-- To validate architectural decisions
+**Use when:** You've written code and want to ensure it follows best practices and architectural patterns.
 
-**Integration:** ✅ Copy as-is
+**What it does:**
+- Reviews recent code changes
+- Questions implementation decisions
+- Checks alignment with project standards
+- Suggests architectural improvements
+- Identifies potential issues
 
----
+**Example:**
+```
+User: "I've added a new workflow status endpoint"
+Assistant: Uses code-architecture-reviewer agent to review the implementation
+```
 
 ### code-refactor-master
-**Purpose:** Plan and execute comprehensive refactoring
 
-**When to use:**
-- Reorganizing file structures
-- Breaking down large components
-- Updating import paths after moves
-- Improving code maintainability
+**Use when:** You need to refactor code for better organization, cleaner architecture, or improved maintainability.
 
-**Integration:** ✅ Copy as-is
+**What it does:**
+- Analyzes current code structure
+- Breaks down large components
+- Updates import paths after moves
+- Fixes loading indicator patterns
+- Ensures consistency across codebase
 
----
+**Example:**
+```
+User: "This components folder is a mess with huge files"
+Assistant: Uses code-refactor-master to analyze and reorganize
+```
 
 ### documentation-architect
-**Purpose:** Create comprehensive documentation
 
-**When to use:**
-- Documenting new features
-- Creating API documentation
-- Writing developer guides
-- Generating architectural overviews
+**Use when:** You need to create or update documentation for any part of the codebase.
 
-**Integration:** ✅ Copy as-is
+**What it does:**
+- Gathers context from memory and files
+- Creates developer documentation
+- Generates API documentation
+- Creates data flow diagrams
+- Updates README files
 
----
-
-### frontend-error-fixer
-**Purpose:** Debug and fix frontend errors
-
-**When to use:**
-- Browser console errors
-- TypeScript compilation errors in frontend
-- React errors
-- Build failures
-
-**Integration:** ⚠️ May reference screenshot paths - update if needed
-
----
+**Example:**
+```
+User: "Document the authentication system"
+Assistant: Uses documentation-architect to create comprehensive docs
+```
 
 ### plan-reviewer
-**Purpose:** Review development plans before implementation
 
-**When to use:**
-- Before starting complex features
-- Validating architectural plans
-- Identifying potential issues early
-- Getting second opinion on approach
+**Use when:** You have a development plan that needs review before implementation.
 
-**Integration:** ✅ Copy as-is
+**What it does:**
+- Analyzes proposed plans
+- Identifies potential issues
+- Suggests missing considerations
+- Evaluates alternative approaches
+- Validates assumptions
 
----
+**Example:**
+```
+User: "Review this plan before I start implementation"
+Assistant: Uses plan-reviewer to analyze and provide feedback
+```
 
 ### refactor-planner
-**Purpose:** Create comprehensive refactoring strategies
 
-**When to use:**
-- Planning code reorganization
-- Modernizing legacy code
-- Breaking down large files
-- Improving code structure
+**Use when:** You need to analyze code and create a comprehensive refactoring plan.
 
-**Integration:** ✅ Copy as-is
+**What it does:**
+- Analyzes current code structure
+- Identifies improvement opportunities
+- Creates step-by-step refactoring plans
+- Assesses risks
+- Considers architectural trade-offs
 
----
-
-### web-research-specialist
-**Purpose:** Research technical issues online
-
-**When to use:**
-- Debugging obscure errors
-- Finding solutions to problems
-- Researching best practices
-- Comparing implementation approaches
-
-**Integration:** ✅ Copy as-is
-
----
-
-### auth-route-tester
-**Purpose:** Test authenticated API endpoints
-
-**When to use:**
-- Testing routes with JWT cookie auth
-- Validating endpoint functionality
-- Debugging authentication issues
-
-**Integration:** ⚠️ Requires JWT cookie-based auth
-
----
-
-### auth-route-debugger
-**Purpose:** Debug authentication issues
-
-**When to use:**
-- Auth failures
-- Token issues
-- Cookie problems
-- Permission errors
-
-**Integration:** ⚠️ Requires JWT cookie-based auth
-
----
-
-### auto-error-resolver
-**Purpose:** Automatically fix TypeScript compilation errors
-
-**When to use:**
-- Build failures with TypeScript errors
-- After refactoring that breaks types
-- Systematic error resolution needed
-
-**Integration:** ⚠️ May need path updates
-
----
-
-## How to Integrate an Agent
-
-### Standard Integration (Most Agents)
-
-**Step 1: Copy the file**
-```bash
-cp showcase/.claude/agents/agent-name.md \\
-   your-project/.claude/agents/
+**Example:**
+```
+User: "I need to refactor our authentication module"
+Assistant: Uses refactor-planner to create a detailed plan
 ```
 
-**Step 2: Verify (optional)**
-```bash
-# Check for hardcoded paths
-grep -n "~/git/\|/root/git/\|/Users/" your-project/.claude/agents/agent-name.md
+### Security & Testing Agents
+
+#### security-reviewer
+
+**Use when:** You need security vulnerability analysis before commits or for security-critical code.
+
+**What it does:**
+- Analyzes code for OWASP Top 10 vulnerabilities
+- Checks authentication and authorization
+- Validates input sanitization
+- Identifies injection risks (SQL, XSS, etc.)
+- Reviews secret management
+
+**Example:**
+```
+User: "Check this payment processing code for security issues"
+Assistant: Uses security-reviewer for vulnerability analysis
 ```
 
-**Step 3: Use it**
-Ask Claude: "Use the [agent-name] agent to [task]"
+#### tdd-guide
 
-That's it! Agents work immediately.
+**Use when:** Implementing new features or fixing bugs using test-driven development.
 
----
+**What it does:**
+- Enforces RED → GREEN → REFACTOR cycle
+- Guides test-first development
+- Ensures 80%+ test coverage
+- Reviews test quality
+- Helps debug test failures
 
-### Agents Requiring Customization
+**Example:**
+```
+User: "Add a new user registration feature"
+Assistant: Uses tdd-guide to enforce test-first development
+```
 
-**frontend-error-fixer:**
-- May reference screenshot paths
-- Ask user: "Where should screenshots be saved?"
-- Update paths in agent file
+### Build & Documentation Agents
 
-**auth-route-tester / auth-route-debugger:**
-- Require JWT cookie authentication
-- Update service URLs from examples
-- Customize for user's auth setup
+#### build-error-resolver
 
-**auto-error-resolver:**
-- May have hardcoded project paths
-- Update to use `$CLAUDE_PROJECT_DIR` or relative paths
+**Use when:** Your build fails with compilation or build errors.
 
----
+**What it does:**
+- Analyzes build error messages
+- Diagnoses root causes
+- Suggests fixes incrementally
+- Verifies fixes work
+- Handles TypeScript, bundling, and compilation errors
 
-## When to Use Agents vs Skills
+**Example:**
+```
+User: "The build is failing with TypeScript errors"
+Assistant: Uses build-error-resolver to diagnose and fix
+```
 
-| Use Agents When... | Use Skills When... |
-|-------------------|-------------------|
-| Task requires multiple steps | Need inline guidance |
-| Complex analysis needed | Checking best practices |
-| Autonomous work preferred | Want to maintain control |
-| Task has clear end goal | Ongoing development work |
-| Example: "Review all controllers" | Example: "Creating a new route" |
+### Research Agents
 
-**Both can work together:**
-- Skill provides patterns during development
-- Agent reviews the result when complete
+#### web-research-specialist
 
----
+**Use when:** You need to research technical issues, debug problems, or gather information from the internet.
 
-## Agent Quick Reference
+**What it does:**
+- Searches GitHub issues, Reddit, Stack Overflow
+- Finds relevant discussions and solutions
+- Compiles findings from multiple sources
+- Uses creative search strategies
+- Provides comprehensive summaries
 
-| Agent | Complexity | Customization | Auth Required |
-|-------|-----------|---------------|---------------|
-| code-architecture-reviewer | Medium | ✅ None | No |
-| code-refactor-master | High | ✅ None | No |
-| documentation-architect | Medium | ✅ None | No |
-| frontend-error-fixer | Medium | ⚠️ Screenshot paths | No |
-| plan-reviewer | Low | ✅ None | No |
-| refactor-planner | Medium | ✅ None | No |
-| web-research-specialist | Low | ✅ None | No |
-| auth-route-tester | Medium | ⚠️ Auth setup | JWT cookies |
-| auth-route-debugger | Medium | ⚠️ Auth setup | JWT cookies |
-| auto-error-resolver | Low | ⚠️ Paths | No |
-
----
-
-## For Claude Code
-
-**When integrating agents for a user:**
-
-1. **Read [CLAUDE_INTEGRATION_GUIDE.md](../../CLAUDE_INTEGRATION_GUIDE.md)**
-2. **Just copy the .md file** - agents are standalone
-3. **Check for hardcoded paths:**
-   ```bash
-   grep "~/git/\|/root/" agent-name.md
-   ```
-4. **Update paths if found** to `$CLAUDE_PROJECT_DIR` or `.`
-5. **For auth agents:** Ask if they use JWT cookie auth first
-
-**That's it!** Agents are the easiest components to integrate.
+**Example:**
+```
+User: "I'm getting a 'Module not found' error with webpack"
+Assistant: Uses web-research-specialist to find solutions
+```
 
 ---
 
-## Creating Your Own Agents
+## How to Use Agents
 
-Agents are markdown files with optional YAML frontmatter:
+Agents are invoked automatically by Claude when tasks match their descriptions. You can also explicitly request them:
 
+```
+"Use the code-architecture-reviewer agent to review my UserService class"
+```
+
+Or Claude will suggest:
+```
+"Let me use the refactor-planner agent to create a refactoring strategy"
+```
+
+---
+
+## Optional Specialized Agents
+
+See [optional-components/agents/README.md](../../optional-components/agents/README.md) for **7 specialized agents** (domain-specific and advanced use cases):
+
+### Testing
+- **e2e-runner** - Playwright E2E test execution
+
+### Debugging
+- **frontend-error-fixer** - Debug frontend build and runtime errors
+- **auto-error-resolver** - Auto-fix TypeScript compilation errors
+- **auth-route-debugger** - Debug JWT authentication issues
+
+### Maintenance
+- **refactor-cleaner** - Dead code identification and removal
+- **doc-updater** - Documentation synchronization with code
+
+### Domain-Specific
+- **auth-route-tester** - Test authenticated endpoints (JWT cookie auth)
+
+**Note:** The 6 most universal agents (planner, architect, code-reviewer, security-reviewer, tdd-guide, build-error-resolver) have been moved to the base template above.
+
+---
+
+## Agent vs Skill
+
+**When to use an Agent:**
+- Complex, multi-step tasks
+- Need autonomous execution
+- Task requires specific tools/workflow
+- Want specialized expertise
+
+**When to use a Skill:**
+- Ongoing guidance/patterns
+- Domain knowledge reference
+- Code examples and best practices
+- Persistent throughout session
+
+**Example:**
+- Use **backend-patterns skill** for API design patterns
+- Use **planner agent** to plan implementing a specific API feature
+
+---
+
+## Adding Optional Agents
+
+To use specialized agents from [optional-components/agents/](../../optional-components/agents/):
+
+```bash
+# Example: Copy e2e-runner for Playwright testing
+cp optional-components/agents/testing/e2e-runner.md .claude/agents/
+
+# That's it! Agent is now available
+```
+
+No configuration needed - agents are self-contained.
+
+**When to add optional agents:**
+- **e2e-runner**: When using Playwright for E2E testing
+- **frontend-error-fixer**: For frontend-heavy projects (React, etc.)
+- **auto-error-resolver**: For large TypeScript codebases
+- **auth-route-tester**: For Express APIs with JWT auth
+- **doc-updater**: When maintaining extensive documentation
+
+---
+
+## Agent Capabilities
+
+### Autonomous Execution
+
+Agents run independently with:
+- Full conversation context
+- Access to all tools
+- Ability to make multi-step decisions
+- Return final result when done
+
+### Tool Access
+
+Most agents have access to:
+- File reading (Glob, Grep, Read)
+- Code editing (Edit, Write)
+- Web research (WebFetch, WebSearch)
+- Bash commands
+- Task delegation (can launch sub-agents)
+
+### Model Selection
+
+Some agents specify models:
+- **planner** uses Opus for complex planning
+- Most use Sonnet for balanced performance
+- Can be customized in agent .md file
+
+---
+
+## File Structure
+
+```
+agents/
+├── planner.md                        # NEW: Four-phase planning (Opus)
+├── architect.md                      # NEW: System design
+├── plan-reviewer.md
+├── code-reviewer.md                  # NEW: Comprehensive review
+├── code-architecture-reviewer.md
+├── refactor-planner.md
+├── code-refactor-master.md
+├── security-reviewer.md              # NEW: Security analysis
+├── tdd-guide.md                      # NEW: Test-driven development
+├── build-error-resolver.md           # NEW: Build troubleshooting
+├── documentation-architect.md
+├── web-research-specialist.md
+└── README.md                         # This file
+```
+
+**Total: 12 universal agents**
+
+---
+
+## Customization
+
+Agents are markdown files with YAML frontmatter. To customize:
+
+1. Copy agent to your `.claude/agents/` directory
+2. Edit the markdown file
+3. Modify the agent's instructions, tools, or behavior
+
+**Example agent structure:**
 ```markdown
-# Agent Name
+---
+name: agent-name
+description: What this agent does
+tools: [Read, Edit, Bash, ...]
+model: sonnet
+---
 
-## Purpose
-What this agent does
+# Agent Instructions
 
-## Instructions
-Step-by-step instructions for autonomous execution
-
-## Tools Available
-List of tools this agent can use
-
-## Expected Output
-What format to return results in
+Your custom instructions here...
 ```
 
-**Tips:**
-- Be very specific in instructions
-- Break complex tasks into numbered steps
-- Specify exactly what to return
-- Include examples of good output
-- List available tools explicitly
+---
+
+## Best Practices
+
+### Use Agents Proactively
+
+Don't wait for users to ask - delegate when appropriate:
+- Code review after implementing features
+- Planning before major changes
+- Research when encountering errors
+
+### Parallel Execution
+
+Launch multiple independent agents in parallel:
+```
+"I'll launch the code-architecture-reviewer and documentation-architect agents in parallel"
+```
+
+### Agent Chaining
+
+Use agents sequentially for complex workflows:
+1. **refactor-planner** creates plan
+2. **plan-reviewer** reviews it
+3. **code-refactor-master** executes it
+4. **code-architecture-reviewer** verifies result
 
 ---
 
 ## Troubleshooting
 
-### Agent not found
+### Agent not activating
 
-**Check:**
-```bash
-# Is agent file present?
-ls -la .claude/agents/[agent-name].md
-```
+- Agents auto-activate based on task descriptions
+- Try explicitly requesting: "Use the [agent-name] agent"
+- Check agent file exists in `.claude/agents/`
 
-### Agent fails with path errors
+### Agent errors
 
-**Check for hardcoded paths:**
-```bash
-grep "~/\|/root/\|/Users/" .claude/agents/[agent-name].md
-```
+- Review agent .md file for correct format
+- Check YAML frontmatter is valid
+- Verify tools specified are available
 
-**Fix:**
-```bash
-sed -i 's|~/git/.*project|$CLAUDE_PROJECT_DIR|g' .claude/agents/[agent-name].md
-```
+### Agent not helpful
+
+- May need customization for your use case
+- Try different agent for same task
+- Provide more context in request
 
 ---
 
-## Next Steps
+## Learn More
 
-1. **Browse agents above** - Find ones useful for your work
-2. **Copy what you need** - Just the .md file
-3. **Ask Claude to use them** - "Use [agent] to [task]"
-4. **Create your own** - Follow the pattern for your specific needs
-
-**Questions?** See [CLAUDE_INTEGRATION_GUIDE.md](../../CLAUDE_INTEGRATION_GUIDE.md)
+- **Optional agents:** [../../optional-components/agents/README.md](../../optional-components/agents/README.md)
+- **Skills vs Agents:** [../skills/README.md](../skills/README.md)
+- **Main guide:** [../../README.md](../../README.md)

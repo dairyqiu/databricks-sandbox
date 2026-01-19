@@ -1,345 +1,469 @@
-# Claude Code Infrastructure Showcase
+# Claude Code Multi-Project Starter Template
 
-**A curated reference library of production-tested Claude Code infrastructure.**
+**A comprehensive, production-tested template for launching new projects with Claude Code.**
 
-Born from 6 months of real-world use managing a complex TypeScript microservices project, this showcase provides the patterns and systems that solved the "skills don't activate automatically" problem and scaled Claude Code for enterprise development.
-
-> **This is NOT a working application** - it's a reference library. Copy what you need into your own projects.
+Start with a powerful base of universal components that work across ALL project types (AI research, web apps, Mac apps, data science, etc.), then selectively add domain-specific components as needed. Born from 6 months of real-world development and enriched with battle-tested patterns from the Claude Code community.
 
 ---
 
 ## What's Inside
 
-**Production-tested infrastructure for:**
-- ✅ **Auto-activating skills** via hooks
-- ✅ **Modular skill pattern** (500-line rule with progressive disclosure)
-- ✅ **Specialized agents** for complex tasks
-- ✅ **Dev docs system** that survives context resets
-- ✅ **Comprehensive examples** using generic blog domain
+### 🎯 Core Template (`.claude/`)
+**Comprehensive base that works across ALL project types:**
 
-**Time investment to build:** 6 months of iteration
-**Time to integrate into your project:** 15-30 minutes
+**12 Universal Agents:**
+- Planning & Architecture: planner, architect, plan-reviewer
+- Code Quality: code-reviewer, code-architecture-reviewer, refactor-planner, code-refactor-master
+- Security & Testing: security-reviewer, tdd-guide
+- Build & Documentation: build-error-resolver, documentation-architect
+- Research: web-research-specialist
+
+**6 Universal Commands:**
+- `/dev-docs` - Create development documentation
+- `/dev-docs-update` - Update dev docs before context reset
+- `/plan` - Four-phase implementation planning
+- `/code-review` - Comprehensive code review
+- `/tdd` - Test-driven development workflow
+- `/build-fix` - Build error troubleshooting
+
+**3 Universal Skills:**
+- skill-developer - Meta-skill for creating skills
+- coding-standards - TypeScript best practices
+- tdd-workflow - Test-driven development methodology
+
+**7 Hard Rules:**
+- Security, git workflow, code quality, testing, agents, performance, patterns
+
+**2 Essential Hooks:**
+- Skill auto-activation + file change tracking
+
+### 📦 Optional Components (`optional-components/`)
+**Add only what your specific project needs:**
+- **9 domain skills** - Backend, frontend, security, databases (organized by category)
+- **7 specialized agents** - E2E testing, debugging, maintenance (organized by category)
+- **5 workflow commands** - Testing, workflow automation, research
+- **Advanced hooks** - TypeScript validation, auto-formatting, console.log detection
+- **MCP configurations** - 15 pre-configured MCP servers
+
+### 📚 Examples (`examples/`)
+**See it in action:**
+- Full-stack TypeScript setup
+- Backend-only API project
+- Frontend-only app
 
 ---
 
-## Quick Start - Pick Your Path
+## Quick Start
 
-### 🤖 Using Claude Code to Integrate?
+### Option 1: Start Fresh (5 minutes)
 
-**Claude:** Read [`CLAUDE_INTEGRATION_GUIDE.md`](CLAUDE_INTEGRATION_GUIDE.md) for step-by-step integration instructions tailored for AI-assisted setup.
+```bash
+# 1. Copy the core template to your new project
+cp -r .claude/ /path/to/your-project/
 
-### 🎯 I want skill auto-activation
+# 2. Install hook dependencies
+cd /path/to/your-project/.claude/hooks/
+npm install
 
-**The breakthrough feature:** Skills that actually activate when you need them.
+# 3. Test it works
+# Edit any file - the post-tool-use-tracker hook should run
+# Type "skill" in a prompt - skill-developer should auto-suggest
+```
 
-**What you need:**
-1. The skill-activation hooks (2 files)
-2. A skill or two relevant to your work
-3. 15 minutes
+You now have:
+- ✅ Skill auto-activation system working
+- ✅ File change tracking
+- ✅ Hard rules for security, git, code quality, testing, agents, performance, patterns
+- ✅ 12 universal agents ready to use (planning, code quality, security, testing, build, documentation, research)
+- ✅ 6 universal commands (/dev-docs, /dev-docs-update, /plan, /code-review, /tdd, /build-fix)
+- ✅ 3 universal skills (skill-developer, coding-standards, tdd-workflow)
 
-**👉 [Setup Guide: .claude/hooks/README.md](.claude/hooks/README.md)**
+### Option 2: Add to Existing Project (10 minutes)
 
-### 📚 I want to add ONE skill
+If you already have a `.claude/` directory:
 
-Browse the [skills catalog](.claude/skills/) and copy what you need.
+```bash
+# 1. Backup your existing setup
+cp -r .claude/ .claude-backup/
 
-**Available:**
-- **backend-dev-guidelines** - Node.js/Express/TypeScript patterns
-- **frontend-dev-guidelines** - React/TypeScript/MUI v7 patterns
-- **skill-developer** - Meta-skill for creating skills
-- **route-tester** - Test authenticated API routes
-- **error-tracking** - Sentry integration patterns
+# 2. Copy hooks
+cp -r .claude/hooks/* /path/to/your-project/.claude/hooks/
 
-**👉 [Skills Guide: .claude/skills/README.md](.claude/skills/README.md)**
+# 3. Copy or merge settings.json
+# Review .claude/settings.json and integrate hooks config
 
-### 🤖 I want specialized agents
+# 4. Copy rules
+cp -r .claude/rules/ /path/to/your-project/.claude/
 
-10 production-tested agents for complex tasks:
-- Code architecture review
-- Refactoring assistance
-- Documentation generation
-- Error debugging
+# 5. Install dependencies
+cd /path/to/your-project/.claude/hooks/
+npm install
+```
+
+### Option 3: Use an Example (2 minutes)
+
+```bash
+# Copy a pre-configured example
+cp -r examples/fullstack-typescript/.claude/ /path/to/your-project/
+
+# Install dependencies
+cd /path/to/your-project/.claude/hooks/
+npm install
+```
+
+---
+
+## Adding Optional Components
+
+### Domain Skills
+
+Browse [`optional-components/skills/`](optional-components/skills/) and copy what you need:
+
+**Note:** coding-standards and tdd-workflow are now in the base template. The remaining 9 domain-specific skills are organized by category:
+
+**Backend Development:**
+- `backend/backend-dev-guidelines/` - Node.js/Express/Prisma patterns
+- `backend/backend-patterns/` - API design, caching, queuing
+- `backend/route-tester/` - API route testing with JWT auth
+
+**Frontend Development:**
+- `frontend/frontend-dev-guidelines/` - React/MUI v7 patterns
+- `frontend/frontend-patterns/` - React composition, hooks, performance
+
+**Security:**
+- `security/security-review/` - Security checklist
+
+**Databases:**
+- `databases/clickhouse-io/` - Analytics queries
+- `databases/error-tracking/` - Sentry integration
+
+**Templates:**
+- `project-guidelines-example/` - Template for creating your own skills
+
+**To integrate a skill:**
+
+```bash
+# 1. Copy the skill
+cp -r optional-components/skills/backend/backend-dev-guidelines/ .claude/skills/
+
+# 2. Add to skill-rules.json
+# Copy the skill configuration from optional-components/skills/README.md
+# and add it to .claude/skills/skill-rules.json
+```
+
+### Specialized Agents
+
+**Note:** 6 universal agents (planner, code-reviewer, security-reviewer, architect, tdd-guide, build-error-resolver) are now in the base template.
+
+See [`optional-components/agents/README.md`](optional-components/agents/README.md) for 7 remaining specialized agents organized by category:
+
+**Testing:**
+- `testing/e2e-runner.md` - Playwright E2E test execution
+
+**Debugging:**
+- `debugging/frontend-error-fixer.md` - Debug frontend build and runtime errors
+- `debugging/auto-error-resolver.md` - Auto-fix TypeScript compilation errors
+- `debugging/auth-route-debugger.md` - Debug JWT authentication issues
+
+**Maintenance:**
+- `maintenance/refactor-cleaner.md` - Dead code identification and removal
+- `maintenance/doc-updater.md` - Documentation synchronization with code
+
+**Domain-Specific:**
+- `domain-specific/auth-route-tester.md` - Test authenticated endpoints (JWT cookie auth)
+
+**To use an agent:**
+```bash
+cp optional-components/agents/testing/e2e-runner.md .claude/agents/
+```
+
+### Advanced Hooks
+
+See [`optional-components/hooks/README.md`](optional-components/hooks/README.md) for:
+
+- TypeScript validation on save
+- Git push approval gates
+- Auto-formatting with Prettier
+- Console.log detection
 - And more...
 
-**👉 [Agents Guide: .claude/agents/README.md](.claude/agents/README.md)**
+### Slash Commands
+
+**Base Commands (included in core template):**
+
+See [`.claude/commands/README.md`](.claude/commands/README.md) for all 6 universal commands:
+- `/dev-docs` - Create development documentation for tracking features
+- `/dev-docs-update` - Update dev docs before context reset
+- `/plan` - Four-phase implementation planning
+- `/code-review` - Comprehensive code review
+- `/tdd` - Test-driven development workflow
+- `/build-fix` - Build error troubleshooting
+
+**Optional Commands:**
+
+**Note:** The 4 most universal commands (plan, code-review, tdd, build-fix) are now in the base template.
+
+See [`optional-components/commands/README.md`](optional-components/commands/README.md) for 5 remaining workflow commands organized by category:
+
+**Testing:**
+- `/e2e` - End-to-end testing with Playwright
+- `/test-coverage` - Analyze test coverage
+
+**Workflow:**
+- `/refactor-clean` - Dead code identification
+- `/update-docs` - Documentation synchronization
+
+**Research:**
+- `/route-research` - Research API routes for testing
 
 ---
 
-## What Makes This Different?
+## How It Works
 
-### The Auto-Activation Breakthrough
+### Auto-Activation System
 
-**Problem:** Claude Code skills just sit there. You have to remember to use them.
+The core of this template is the skill auto-activation system:
 
-**Solution:** UserPromptSubmit hook that:
-- Analyzes your prompts
-- Checks file context
-- Automatically suggests relevant skills
-- Works via `skill-rules.json` configuration
+1. **UserPromptSubmit Hook** - Runs before Claude sees your prompt
+2. **skill-rules.json** - Defines trigger patterns (keywords, intent, file paths)
+3. **Skill Suggestions** - Skills automatically suggest when relevant
+4. **Progressive Disclosure** - Resources load only when needed
 
-**Result:** Skills activate when you need them, not when you remember them.
+**Result:** Skills activate based on context, not memory.
 
-### Production-Tested Patterns
+### Hard Rules System
 
-These aren't theoretical examples - they're extracted from:
-- ✅ 6 microservices in production
-- ✅ 50,000+ lines of TypeScript
-- ✅ React frontend with complex data grids
-- ✅ Sophisticated workflow engine
-- ✅ 6 months of daily Claude Code use
+Located in [`.claude/rules/`](.claude/rules/), these enforce critical practices:
 
-The patterns work because they solved real problems.
+- **security.md** - No hardcoded secrets, injection prevention, error tracking
+- **git-workflow.md** - Conventional commits, PR reviews
+- **coding-style.md** - TypeScript, naming, organization (KISS, DRY, YAGNI)
+- **testing.md** - TDD workflow, coverage requirements
+- **agents.md** - When to delegate to specialized agents
+- **performance.md** - Model selection, context management
+- **patterns.md** - API responses, repository patterns, error handling
+
+These rules guide Claude's behavior across all your projects.
 
 ### Modular Skills (500-Line Rule)
 
-Large skills hit context limits. The solution:
+Large skills hit context limits. This template uses modular structure:
 
 ```
 skill-name/
-  SKILL.md                  # <500 lines, high-level guide
+  SKILL.md                  # <500 lines - Overview + navigation
   resources/
     topic-1.md              # <500 lines each
     topic-2.md
-    topic-3.md
 ```
 
-**Progressive disclosure:** Claude loads main skill first, loads resources only when needed.
+Claude loads the main file first, then resources only when explicitly referenced.
 
 ---
 
 ## Repository Structure
 
 ```
-.claude/
-├── skills/                 # 5 production skills
-│   ├── backend-dev-guidelines/  (12 resource files)
-│   ├── frontend-dev-guidelines/ (11 resource files)
-│   ├── skill-developer/         (7 resource files)
-│   ├── route-tester/
-│   ├── error-tracking/
-│   └── skill-rules.json    # Skill activation configuration
-├── hooks/                  # 6 hooks for automation
-│   ├── skill-activation-prompt.*  (ESSENTIAL)
-│   ├── post-tool-use-tracker.sh   (ESSENTIAL)
-│   ├── tsc-check.sh        (optional, needs customization)
-│   └── trigger-build-resolver.sh  (optional)
-├── agents/                 # 10 specialized agents
-│   ├── code-architecture-reviewer.md
-│   ├── refactor-planner.md
-│   ├── frontend-error-fixer.md
-│   └── ... 7 more
-└── commands/               # 3 slash commands
-    ├── dev-docs.md
-    └── ...
-
-dev/
-└── active/                 # Dev docs pattern examples
-    └── public-infrastructure-repo/
+claude-code-template/
+├── .claude/                    # CORE TEMPLATE (copy this)
+│   ├── settings.json           # Essential hooks configuration
+│   ├── hooks/                  # Auto-activation + file tracking (2 essential hooks)
+│   ├── skills/                 # 3 universal skills (skill-developer, coding-standards, tdd-workflow)
+│   ├── rules/                  # 7 hard rules (security, git, code quality, testing, agents, performance, patterns)
+│   ├── agents/                 # 12 universal agents (planning, code quality, security, testing, build, docs, research)
+│   └── commands/               # 6 universal commands (dev-docs, plan, code-review, tdd, build-fix)
+│
+├── optional-components/        # Add only what you need
+│   ├── skills/                 # 9 domain-specific skills (organized by category)
+│   │   ├── backend/            # backend-dev-guidelines, backend-patterns, route-tester
+│   │   ├── frontend/           # frontend-dev-guidelines, frontend-patterns
+│   │   ├── security/           # security-review
+│   │   ├── databases/          # clickhouse-io, error-tracking
+│   │   └── project-guidelines-example/
+│   ├── agents/                 # 7 specialized agents (organized by category)
+│   │   ├── testing/            # e2e-runner
+│   │   ├── debugging/          # frontend-error-fixer, auto-error-resolver, auth-route-debugger
+│   │   ├── maintenance/        # refactor-cleaner, doc-updater
+│   │   └── domain-specific/    # auth-route-tester
+│   ├── hooks/                  # Advanced automation hooks
+│   │   ├── validation/         # tsc-check, stop-build-check-enhanced
+│   │   ├── automation/         # trigger-build-resolver, error-handling-reminder
+│   │   └── examples/           # hooks.json
+│   ├── commands/               # 5 workflow commands (organized by category)
+│   │   ├── testing/            # e2e, test-coverage
+│   │   ├── workflow/           # refactor-clean, update-docs
+│   │   └── research/           # route-research
+│   └── mcp-configs/            # MCP server examples
+│
+├── examples/                   # Pre-configured setups
+│   ├── fullstack-typescript/
+│   ├── backend-only/
+│   └── frontend-only/
+│
+├── legacy-components/          # Archived original files
+├── everything-claude-code/     # Source materials (reference)
+└── dev/                        # Dev docs pattern
 ```
 
 ---
 
-## Component Catalog
+## Documentation
 
-### 🎨 Skills (5)
-
-| Skill | Lines | Purpose | Best For |
-|-------|-------|---------|----------|
-| [**skill-developer**](.claude/skills/skill-developer/) | 426 | Creating and managing skills | Meta-development |
-| [**backend-dev-guidelines**](.claude/skills/backend-dev-guidelines/) | 304 | Express/Prisma/Sentry patterns | Backend APIs |
-| [**frontend-dev-guidelines**](.claude/skills/frontend-dev-guidelines/) | 398 | React/MUI v7/TypeScript | React frontends |
-| [**route-tester**](.claude/skills/route-tester/) | 389 | Testing authenticated routes | API testing |
-| [**error-tracking**](.claude/skills/error-tracking/) | ~250 | Sentry integration | Error monitoring |
-
-**All skills follow the modular pattern** - main file + resource files for progressive disclosure.
-
-**👉 [How to integrate skills →](.claude/skills/README.md)**
-
-### 🪝 Hooks (6)
-
-| Hook | Type | Essential? | Customization |
-|------|------|-----------|---------------|
-| skill-activation-prompt | UserPromptSubmit | ✅ YES | ✅ None needed |
-| post-tool-use-tracker | PostToolUse | ✅ YES | ✅ None needed |
-| tsc-check | Stop | ⚠️ Optional | ⚠️ Heavy - monorepo only |
-| trigger-build-resolver | Stop | ⚠️ Optional | ⚠️ Heavy - monorepo only |
-| error-handling-reminder | Stop | ⚠️ Optional | ⚠️ Moderate |
-| stop-build-check-enhanced | Stop | ⚠️ Optional | ⚠️ Moderate |
-
-**Start with the two essential hooks** - they enable skill auto-activation and work out of the box.
-
-**👉 [Hook setup guide →](.claude/hooks/README.md)**
-
-### 🤖 Agents (10)
-
-**Standalone - just copy and use!**
-
-| Agent | Purpose |
-|-------|---------|
-| code-architecture-reviewer | Review code for architectural consistency |
-| code-refactor-master | Plan and execute refactoring |
-| documentation-architect | Generate comprehensive documentation |
-| frontend-error-fixer | Debug frontend errors |
-| plan-reviewer | Review development plans |
-| refactor-planner | Create refactoring strategies |
-| web-research-specialist | Research technical issues online |
-| auth-route-tester | Test authenticated endpoints |
-| auth-route-debugger | Debug auth issues |
-| auto-error-resolver | Auto-fix TypeScript errors |
-
-**👉 [How agents work →](.claude/agents/README.md)**
-
-### 💬 Slash Commands (3)
-
-| Command | Purpose |
-|---------|---------|
-| /dev-docs | Create structured dev documentation |
-| /dev-docs-update | Update docs before context reset |
-| /route-research-for-testing | Research route patterns for testing |
+- **[TEMPLATE_SETUP_GUIDE.md](TEMPLATE_SETUP_GUIDE.md)** - Comprehensive setup guide
+- **[.claude/rules/README.md](.claude/rules/README.md)** - Hard rules explanation
+- **[.claude/hooks/README.md](.claude/hooks/README.md)** - Essential hooks guide
+- **[.claude/skills/README.md](.claude/skills/README.md)** - Minimal base skills
+- **[.claude/agents/README.md](.claude/agents/README.md)** - Universal agents
+- **[optional-components/skills/README.md](optional-components/skills/README.md)** - Optional skills catalog
+- **[optional-components/agents/README.md](optional-components/agents/README.md)** - Specialized agents
+- **[optional-components/hooks/README.md](optional-components/hooks/README.md)** - Advanced hooks
+- **[optional-components/commands/README.md](optional-components/commands/README.md)** - Slash commands
 
 ---
 
-## Key Concepts
+## Philosophy
 
-### Hooks + skill-rules.json = Auto-Activation
+### Comprehensive Base, Domain Specifics Only When Needed
 
-**The system:**
-1. **skill-activation-prompt hook** runs on every user prompt
-2. Checks **skill-rules.json** for trigger patterns
-3. Suggests relevant skills automatically
-4. Skills load only when needed
+The base template is comprehensive and universal:
+- **12 universal agents** covering planning, code quality, security, testing, build, documentation, and research
+- **6 universal commands** for essential workflows (dev docs, planning, code review, TDD, build troubleshooting)
+- **3 universal skills** providing coding standards and TDD methodology
+- **7 hard rules** for critical areas (security, git, code quality, testing, agents, performance, patterns)
+- **Essential automation** (skill activation + file tracking)
 
-**This solves the #1 problem** with Claude Code skills: they don't activate on their own.
+**Philosophy Shift:** From "minimal base, choose your tools" to "comprehensive base, add domain specifics only"
 
-### Progressive Disclosure (500-Line Rule)
+**Result:** Works for most project types (AI research, web apps, Mac apps, data science) without any additions.
 
-**Problem:** Large skills hit context limits
+Add domain-specific components only when needed:
+- Backend/frontend framework patterns
+- Advanced validation hooks
+- Specialized debugging agents
 
-**Solution:** Modular structure
-- Main SKILL.md <500 lines (overview + navigation)
-- Resource files <500 lines each (deep dives)
-- Claude loads incrementally as needed
+### Production-Tested
 
-**Example:** backend-dev-guidelines has 12 resource files covering routing, controllers, services, repositories, testing, etc.
+This template combines:
+- **6 months** of microservices development patterns (original repo)
+- **10+ months** of intensive Claude Code use (everything-claude-code)
+- **Real-world** testing across multiple applications
+- **Community** best practices
 
-### Dev Docs Pattern
+### Flexible & Adaptable
 
-**Problem:** Context resets lose project context
-
-**Solution:** Three-file structure
-- `[task]-plan.md` - Strategic plan
-- `[task]-context.md` - Key decisions and files
-- `[task]-tasks.md` - Checklist format
-
-**Works with:** `/dev-docs` slash command to generate these automatically
-
----
-
-## ⚠️ Important: What Won't Work As-Is
-
-### settings.json
-The included `settings.json` is an **example only**:
-- Stop hooks reference specific monorepo structure
-- Service names (blog-api, etc.) are examples
-- MCP servers may not exist in your setup
-
-**To use it:**
-1. Extract ONLY UserPromptSubmit and PostToolUse hooks
-2. Customize or skip Stop hooks
-3. Update MCP server list for your setup
-
-### Blog Domain Examples
-Skills use generic blog examples (Post/Comment/User):
-- These are **teaching examples**, not requirements
-- Patterns work for any domain (e-commerce, SaaS, etc.)
-- Adapt the patterns to your business logic
-
-### Hook Directory Structures
-Some hooks expect specific structures:
-- `tsc-check.sh` expects service directories
-- Customize based on YOUR project layout
+- Works with any tech stack
+- Copy entire `.claude/` or cherry-pick components
+- Customize rules and skills for your team
+- Examples show different integration approaches
 
 ---
 
-## Integration Workflow
+## What Makes This Special
 
-**Recommended approach:**
+### 1. It Actually Works Out of the Box
 
-### Phase 1: Skill Activation (15 min)
-1. Copy skill-activation-prompt hook
-2. Copy post-tool-use-tracker hook
-3. Update settings.json
-4. Install hook dependencies
+Unlike many templates, this is:
+- ✅ Tested in production
+- ✅ Minimal dependencies
+- ✅ Clear documentation
+- ✅ Working examples
 
-### Phase 2: Add First Skill (10 min)
-1. Pick ONE relevant skill
-2. Copy skill directory
-3. Create/update skill-rules.json
-4. Customize path patterns
+### 2. Solves the Skills Problem
 
-### Phase 3: Test & Iterate (5 min)
-1. Edit a file - skill should activate
-2. Ask a question - skill should be suggested
-3. Add more skills as needed
+Skills are powerful but often sit unused. This template:
+- ✅ Auto-suggests skills based on context
+- ✅ Tracks file changes for smarter suggestions
+- ✅ Uses progressive disclosure to avoid context limits
 
-### Phase 4: Optional Enhancements
-- Add agents you find useful
-- Add slash commands
-- Customize Stop hooks (advanced)
+### 3. Comprehensive Component Library
 
----
+**Base Template:**
+- 12 universal agents
+- 6 universal commands
+- 3 universal skills
+- 7 hard rules
+- 2 essential hooks
 
-## Getting Help
+**Optional Components:**
+- 9 domain skills
+- 7 specialized agents
+- 5 workflow commands
+- Advanced automation hooks
+- 15 MCP configurations
 
-### For Users
-**Issues with integration?**
-1. Check [CLAUDE_INTEGRATION_GUIDE.md](CLAUDE_INTEGRATION_GUIDE.md)
-2. Ask Claude: "Why isn't [skill] activating?"
-3. Open an issue with your project structure
+Most projects need only the base. Add optionals for specific tech stacks.
 
-### For Claude Code
-When helping users integrate:
-1. **Read CLAUDE_INTEGRATION_GUIDE.md FIRST**
-2. Ask about their project structure
-3. Customize, don't blindly copy
-4. Verify after integration
+### 4. Multi-Project Ready
 
----
-
-## What This Solves
-
-### Before This Infrastructure
-
-❌ Skills don't activate automatically
-❌ Have to remember which skill to use
-❌ Large skills hit context limits
-❌ Context resets lose project knowledge
-❌ No consistency across development
-❌ Manual agent invocation every time
-
-### After This Infrastructure
-
-✅ Skills suggest themselves based on context
-✅ Hooks trigger skills at the right time
-✅ Modular skills stay under context limits
-✅ Dev docs preserve knowledge across resets
-✅ Consistent patterns via guardrails
-✅ Agents streamline complex tasks
+Designed as a starter template, not a one-off showcase:
+- Clear separation: universal vs. domain-specific
+- Examples for different project types
+- Easy to copy and customize
 
 ---
 
-## Community
+## Common Use Cases
 
-**Found this useful?**
+### Starting a New Full-Stack Project
 
-- ⭐ Star this repo
-- 🐛 Report issues or suggest improvements
-- 💬 Share your own skills/hooks/agents
-- 📝 Contribute examples from your domain
+```bash
+cp -r examples/fullstack-typescript/.claude/ my-project/
+cd my-project/.claude/hooks/
+npm install
+```
 
-**Background:**
-This infrastructure was detailed in a post I made to Reddit ["Claude Code is a Beast – Tips from 6 Months of Hardcore Use"](https://www.reddit.com/r/ClaudeAI/comments/1oivjvm/claude_code_is_a_beast_tips_from_6_months_of/). After hundreds of requests, this showcase was created to help the community implement these patterns.
+Includes: backend-dev-guidelines, frontend-dev-guidelines, error-tracking, route-tester
 
+### Adding Claude Code to Existing Backend
+
+```bash
+# Base template already includes planning, code review, TDD, and build troubleshooting
+cp -r .claude/ my-api/
+
+# Add backend-specific patterns if needed
+cp -r optional-components/skills/backend/backend-dev-guidelines/ my-api/.claude/skills/
+# Update skill-rules.json with backend-dev-guidelines config
+
+cd my-api/.claude/hooks/
+npm install
+```
+
+### Team Standardization
+
+```bash
+# Fork this template
+# Customize .claude/rules/ for your team standards
+# Add your tech stack skills to .claude/skills/
+# Distribute to team members
+```
+
+---
+
+## Credits & Sources
+
+This template combines components from two sources:
+
+### Original Repository
+- 6 months of TypeScript microservices development
+- Auto-activation system (hooks + skill-rules.json)
+- Modular skill pattern (500-line rule)
+- Backend/frontend dev guidelines
+- Route tester, error tracking skills
+- Code architecture and refactoring agents
+
+### everything-claude-code (by @affaan-m)
+- 10+ months of intensive Claude Code use
+- Hard rules system (security, git, coding, testing, agents, performance, patterns)
+- TDD workflow and coding standards
+- Planning, architecture, security, and build troubleshooting agents
+- Advanced hooks (git gates, auto-formatting)
+- MCP configurations
+
+### Consolidation
+- Moved 6 universal agents to base (planner, code-reviewer, security-reviewer, architect, tdd-guide, build-error-resolver)
+- Moved 4 universal commands to base (plan, code-review, tdd, build-fix)
+- Moved 2 universal skills to base (coding-standards, tdd-workflow)
+- Organized optional components by category for easy discovery
 
 ---
 
@@ -349,12 +473,39 @@ MIT License - Use freely in your projects, commercial or personal.
 
 ---
 
-## Quick Links
+## Getting Help
 
-- 📖 [Claude Integration Guide](CLAUDE_INTEGRATION_GUIDE.md) - For AI-assisted setup
-- 🎨 [Skills Documentation](.claude/skills/README.md)
-- 🪝 [Hooks Setup](.claude/hooks/README.md)
-- 🤖 [Agents Guide](.claude/agents/README.md)
-- 📝 [Dev Docs Pattern](dev/README.md)
+**Issues with setup?**
+- Check [TEMPLATE_SETUP_GUIDE.md](TEMPLATE_SETUP_GUIDE.md)
+- Review [examples/](examples/) for working configurations
+- Open an issue with your project structure
 
-**Start here:** Copy the two essential hooks, add one skill, and see the auto-activation magic happen.
+**Want to contribute?**
+- Add your own skills to optional-components/
+- Share example integrations
+- Improve documentation
+- Report bugs
+
+---
+
+## Quick Reference
+
+**Essential Files:**
+- [`.claude/settings.json`](.claude/settings.json) - Hook configuration
+- [`.claude/skills/skill-rules.json`](.claude/skills/skill-rules.json) - Skill triggers
+- [`.claude/rules/`](.claude/rules/) - Hard rules
+
+**Key Directories:**
+- [`.claude/`](.claude/) - Core template (copy this)
+- [`optional-components/`](optional-components/) - Additional components
+- [`examples/`](examples/) - Working examples
+- [`legacy-components/`](legacy-components/) - Archived originals
+
+**Documentation:**
+- [TEMPLATE_SETUP_GUIDE.md](TEMPLATE_SETUP_GUIDE.md) - Full setup guide
+- [.claude/hooks/README.md](.claude/hooks/README.md) - Hooks explained
+- [optional-components/skills/README.md](optional-components/skills/README.md) - Skills catalog
+
+---
+
+**Ready to start?** Copy [`.claude/`](.claude/) to your project and run `npm install` in `.claude/hooks/`
