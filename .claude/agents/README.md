@@ -36,6 +36,60 @@ These agents are **standalone** - just use them. No customization needed.
 
 ---
 
+## Agent Distinctions
+
+Some agents have similar names but serve **complementary purposes**. Here's when to use each:
+
+### Code Review Agents
+
+**code-reviewer** vs **code-architecture-reviewer**
+- **code-reviewer**: Line-level code quality (readability, maintainability, bugs, edge cases)
+  - Use after: Small changes, bug fixes, feature additions
+  - Focuses on: Code smells, error handling, naming, tests
+
+- **code-architecture-reviewer**: System-level patterns (consistency, architecture alignment)
+  - Use after: Major features, structural changes, new modules
+  - Focuses on: Design patterns, coupling, separation of concerns
+
+**When to use both:** After major features, run code-reviewer first for quality, then code-architecture-reviewer for system integration.
+
+### Refactoring Agents
+
+**refactor-planner** vs **code-refactor-master**
+- **refactor-planner**: Creates refactoring strategy
+  - Use when: Planning refactoring approach
+  - Output: Analysis, plan, risk assessment, step-by-step strategy
+  - Does not: Execute the refactoring
+
+- **code-refactor-master**: Executes refactoring plan
+  - Use when: Ready to refactor
+  - Does: File moves, import updates, component extraction, code reorganization
+  - Requires: Clear plan (from refactor-planner or user)
+
+**Typical workflow:** refactor-planner → (review plan) → code-refactor-master → code-reviewer
+
+### Planning Agents
+
+**planner** vs **architect** vs **plan-reviewer**
+- **planner**: Four-phase implementation planning
+  - Use for: Feature implementation, complex tasks
+  - Focus: Step-by-step execution plan
+  - Output: Detailed implementation steps, file changes, testing approach
+
+- **architect**: High-level system design decisions
+  - Use for: Choosing technologies, design patterns, scalability
+  - Focus: System architecture, trade-offs, best practices
+  - Output: Architectural recommendations with justifications
+
+- **plan-reviewer**: Validates plans before implementation
+  - Use for: Reviewing any development plan
+  - Focus: Finding issues, missing considerations, alternatives
+  - Output: Plan critique, suggestions, risk identification
+
+**Typical workflow:** architect (design) → planner (implementation) → plan-reviewer (validation) → execute
+
+---
+
 ## Agent Descriptions
 
 ### Planning & Architecture Agents

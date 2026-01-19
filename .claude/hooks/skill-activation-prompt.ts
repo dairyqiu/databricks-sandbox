@@ -34,6 +34,8 @@ interface MatchedSkill {
 }
 
 async function main() {
+    const VERBOSE = process.env.CLAUDE_HOOK_VERBOSE === 'true';
+
     try {
         // Read input from stdin
         const input = readFileSync(0, 'utf-8');
@@ -41,7 +43,7 @@ async function main() {
         const prompt = data.prompt.toLowerCase();
 
         // Load skill rules
-        const projectDir = process.env.CLAUDE_PROJECT_DIR || '$HOME/project';
+        const projectDir = process.env.CLAUDE_PROJECT_DIR || process.cwd();
         const rulesPath = join(projectDir, '.claude', 'skills', 'skill-rules.json');
         const rules: SkillRules = JSON.parse(readFileSync(rulesPath, 'utf-8'));
 
@@ -121,12 +123,19 @@ async function main() {
 
         process.exit(0);
     } catch (err) {
-        console.error('Error in skill-activation-prompt hook:', err);
-        process.exit(1);
+        // Fail silently in production to avoid blocking user prompts
+        // Enable verbose mode with CLAUDE_HOOK_VERBOSE=true for debugging
+        if (VERBOSE) {
+            console.error('Error in skill-activation-prompt hook:', err);
+        }
+        process.exit(0); // Exit cleanly to not block user experience
     }
 }
 
 main().catch(err => {
-    console.error('Uncaught error:', err);
-    process.exit(1);
+    const VERBOSE = process.env.CLAUDE_HOOK_VERBOSE === 'true';
+    if (VERBOSE) {
+        console.error('Uncaught error:', err);
+    }
+    process.exit(0); // Exit cleanly even on uncaught errors
 });

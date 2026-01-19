@@ -6,7 +6,11 @@
     "type": "module",
     "scripts": {
         "check": "tsc --noEmit",
-        "test": "tsx skill-activation-prompt.ts < test-input.json"
+        "test": "tsx skill-activation-prompt.ts < test-input.json",
+        "test:activation": "echo '{\"prompt\":\"help me with TDD\",\"session_id\":\"test\",\"transcript_path\":\"\",\"cwd\":\".\",\"permission_mode\":\"auto\"}' | tsx skill-activation-prompt.ts",
+        "test:activation-verbose": "CLAUDE_HOOK_VERBOSE=true npm run test:activation",
+        "test:tracker": "echo '{\"tool_name\":\"Edit\",\"tool_input\":{\"file_path\":\"test.ts\"}}' | ./post-tool-use-tracker.sh",
+        "clean": "rm -rf node_modules"
     },
     "dependencies": {
         "@types/node": "^20.11.0",

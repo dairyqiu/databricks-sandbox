@@ -1,75 +1,108 @@
-# Agent Orchestration
+# Agent Orchestration Rules
 
-## Available Agents
+## Proactive Agent Invocation
 
-### Universal Agents (In Base Template)
+Claude MUST invoke these agents automatically (no user prompt needed):
 
-Located in `.claude/agents/` - available in all projects:
+| Trigger | Agent | Timing |
+|---------|-------|--------|
+| Complex feature request | **planner** | Before implementation |
+| Code written/modified | **code-reviewer** | Immediately after changes |
+| New feature or bug fix | **tdd-guide** | Before writing implementation |
+| Architectural decision | **architect** | When design choices arise |
+| Build failure | **build-error-resolver** | When build/compile fails |
+| Security-sensitive code | **security-reviewer** | Before committing auth/input handling |
 
-| Agent | Purpose | When to Use |
-|-------|---------|-------------|
-| **Planning & Architecture** | | |
-| planner | Four-phase implementation planning | Complex features, new functionality |
-| architect | System design and architectural decisions | Technical architecture, design patterns |
-| plan-reviewer | Review plans before implementation | Validate implementation approach |
-| **Code Quality** | | |
-| code-reviewer | Comprehensive code review | After writing/modifying code |
-| code-architecture-reviewer | Architectural consistency review | Ensure code matches patterns |
-| refactor-planner | Plan refactoring strategies | Before major refactoring |
-| code-refactor-master | Execute refactoring plans | Reorganize code structure |
-| **Security & Testing** | | |
-| security-reviewer | Security vulnerability analysis | Before commits, security-critical code |
-| tdd-guide | Test-driven development enforcement | New features, bug fixes |
-| **Build & Documentation** | | |
-| build-error-resolver | Fix build and compilation errors | When build fails |
-| documentation-architect | Create comprehensive documentation | Document features, APIs, architecture |
-| **Research** | | |
-| web-research-specialist | Research solutions and patterns | Debug issues, find best practices |
+**Critical:** These are behavioral requirements. Claude should invoke agents without asking permission.
 
-**Total: 12 universal agents** available in every project
+---
 
-### Optional Specialized Agents
+## Parallel Execution Required
 
-Located in `optional-components/agents/` - copy as needed:
+For independent tasks, ALWAYS use parallel Task execution (single message, multiple tool calls).
 
-| Category | Agents | Purpose |
-|----------|--------|---------|
-| Testing | e2e-runner | Playwright E2E testing |
-| Debugging | frontend-error-fixer, auto-error-resolver, auth-route-debugger | Stack-specific debugging |
-| Maintenance | refactor-cleaner, doc-updater | Code cleanup, doc sync |
-| Domain-Specific | auth-route-tester | JWT authentication testing |
-
-## Immediate Agent Usage
-
-Use these agents proactively without waiting for user prompt:
-
-1. **Complex feature requests** → Use **planner** agent
-2. **Code just written/modified** → Use **code-reviewer** agent
-3. **New feature or bug fix** → Use **tdd-guide** agent
-4. **Architectural decision** → Use **architect** agent
-5. **Build failure** → Use **build-error-resolver** agent
-6. **Security-critical code** → Use **security-reviewer** agent
-
-## Parallel Task Execution
-
-ALWAYS use parallel Task execution for independent operations:
-
+**Good: Parallel execution**
 ```markdown
-# GOOD: Parallel execution
 Launch 3 agents in parallel:
-1. Agent 1: Security analysis of auth.ts
-2. Agent 2: Performance review of cache system
-3. Agent 3: Type checking of utils.ts
+- Agent 1: Security analysis of auth.ts
+- Agent 2: Performance review of cache system
+- Agent 3: Type checking of utils.ts
+```
 
-# BAD: Sequential when unnecessary
+**Bad: Sequential when unnecessary**
+```markdown
 First agent 1, then agent 2, then agent 3
 ```
 
+**When parallel is safe:**
+- Agents analyzing different files
+- Independent code reviews
+- Separate research tasks
+- Multiple planning perspectives
+
+**When sequential is required:**
+- Output of one agent informs another
+- Dependent file changes
+- Chain of refactoring steps
+
+---
+
+## Agent Chaining Patterns
+
+### Planning Workflow
+```
+architect → planner → plan-reviewer → execute
+```
+- **architect**: Determine system design approach
+- **planner**: Create detailed implementation plan
+- **plan-reviewer**: Validate plan before execution
+
+### Refactoring Workflow
+```
+refactor-planner → code-refactor-master → code-reviewer
+```
+- **refactor-planner**: Analyze and plan refactoring strategy
+- **code-refactor-master**: Execute refactoring (file moves, restructuring)
+- **code-reviewer**: Verify refactored code quality
+
+### Security Workflow
+```
+security-reviewer → (fix issues) → code-reviewer
+```
+- **security-reviewer**: Identify vulnerabilities
+- **code-reviewer**: Verify fixes don't introduce new issues
+
+### Feature Development Workflow
+```
+tdd-guide → (write tests) → (implement) → code-reviewer → security-reviewer
+```
+- **tdd-guide**: Ensure test-first approach
+- **code-reviewer**: Quality check after implementation
+- **security-reviewer**: Security check before commit
+
+---
+
 ## Multi-Perspective Analysis
 
-For complex problems, use split role sub-agents:
-- Factual reviewer
-- Senior engineer
-- Security expert
-- Consistency reviewer
-- Redundancy checker
+For complex decisions, use split-role sub-agents:
+- Factual reviewer (verify claims)
+- Senior engineer (best practices)
+- Security expert (vulnerability analysis)
+- Consistency reviewer (alignment with codebase)
+- Redundancy checker (identify duplication)
+
+**Use when:**
+- Making architectural decisions
+- Reviewing complex refactoring plans
+- Evaluating multiple implementation approaches
+- Debugging intricate issues
+
+---
+
+## Agent Catalog
+
+For full agent descriptions and capabilities, see [../agents/README.md](../agents/README.md)
+
+**Universal agents (12):** planner, architect, plan-reviewer, code-reviewer, code-architecture-reviewer, refactor-planner, code-refactor-master, security-reviewer, tdd-guide, build-error-resolver, documentation-architect, web-research-specialist
+
+**Optional agents:** See `optional-components/agents/` for domain-specific agents

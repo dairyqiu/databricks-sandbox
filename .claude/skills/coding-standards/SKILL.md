@@ -142,109 +142,58 @@ function getMarket(id: any): Promise<any> {
 }
 ```
 
-## React Best Practices
+## Debouncing Pattern
 
-### Component Structure
-
-```typescript
-// ✅ GOOD: Functional component with types
-interface ButtonProps {
-  children: React.ReactNode
-  onClick: () => void
-  disabled?: boolean
-  variant?: 'primary' | 'secondary'
-}
-
-export function Button({
-  children,
-  onClick,
-  disabled = false,
-  variant = 'primary'
-}: ButtonProps) {
-  return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={`btn btn-${variant}`}
-    >
-      {children}
-    </button>
-  )
-}
-
-// ❌ BAD: No types, unclear structure
-export function Button(props) {
-  return <button onClick={props.onClick}>{props.children}</button>
-}
-```
-
-### Custom Hooks
+### Purpose
+Limit expensive operations (API calls, searches) by waiting for user to stop typing.
 
 ```typescript
-// ✅ GOOD: Reusable custom hook
-export function useDebounce<T>(value: T, delay: number): T {
-  const [debouncedValue, setDebouncedValue] = useState<T>(value)
+// ✅ GOOD: Generic debounce function
+function debounce<T extends (...args: any[]) => any>(
+  func: T,
+  delay: number
+): (...args: Parameters<T>) => void {
+  let timeoutId: NodeJS.Timeout
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value)
-    }, delay)
-
-    return () => clearTimeout(handler)
-  }, [value, delay])
-
-  return debouncedValue
+  return (...args: Parameters<T>) => {
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(() => func(...args), delay)
+  }
 }
 
 // Usage
-const debouncedQuery = useDebounce(searchQuery, 500)
+const debouncedSearch = debounce((query: string) => {
+  performSearch(query)
+}, 500)
+
+// Call it multiple times, only last call after 500ms executes
+debouncedSearch('a')
+debouncedSearch('ab')
+debouncedSearch('abc')  // Only this will execute after 500ms
 ```
 
-### State Management
+### Conditional Logic
 
 ```typescript
-// ✅ GOOD: Proper state updates
-const [count, setCount] = useState(0)
+// ✅ GOOD: Clear conditional logic
+if (isLoading) {
+  return showLoadingState()
+}
+if (error) {
+  return showErrorState(error)
+}
+return showDataState(data)
 
-// Functional update for state based on previous state
-setCount(prev => prev + 1)
-
-// ❌ BAD: Direct state reference
-setCount(count + 1)  // Can be stale in async scenarios
+// ❌ BAD: Nested ternaries
+return isLoading ? showLoading() : error ? showError(error) : data ? showData(data) : null
 ```
 
-### Conditional Rendering
+## API Response Patterns
+
+### Consistent Response Structure
 
 ```typescript
-// ✅ GOOD: Clear conditional rendering
-{isLoading && <Spinner />}
-{error && <ErrorMessage error={error} />}
-{data && <DataDisplay data={data} />}
-
-// ❌ BAD: Ternary hell
-{isLoading ? <Spinner /> : error ? <ErrorMessage error={error} /> : data ? <DataDisplay data={data} /> : null}
-```
-
-## API Design Standards
-
-### REST API Conventions
-
-```
-GET    /api/markets              # List all markets
-GET    /api/markets/:id          # Get specific market
-POST   /api/markets              # Create new market
-PUT    /api/markets/:id          # Update market (full)
-PATCH  /api/markets/:id          # Update market (partial)
-DELETE /api/markets/:id          # Delete market
-
-# Query parameters for filtering
-GET /api/markets?status=active&limit=10&offset=0
-```
-
-### Response Format
-
-```typescript
-// ✅ GOOD: Consistent response structure
+// ✅ GOOD: Standardized API response format
 interface ApiResponse<T> {
   success: boolean
   data?: T
@@ -257,80 +206,78 @@ interface ApiResponse<T> {
 }
 
 // Success response
-return NextResponse.json({
+const successResponse: ApiResponse<User[]> = {
   success: true,
-  data: markets,
+  data: users,
   meta: { total: 100, page: 1, limit: 10 }
-})
+}
 
 // Error response
-return NextResponse.json({
+const errorResponse: ApiResponse<never> = {
   success: false,
   error: 'Invalid request'
-}, { status: 400 })
+}
 ```
 
-### Input Validation
+### Input Validation Pattern
 
 ```typescript
-import { z } from 'zod'
-
-// ✅ GOOD: Schema validation
-const CreateMarketSchema = z.object({
-  name: z.string().min(1).max(200),
-  description: z.string().min(1).max(2000),
-  endDate: z.string().datetime(),
-  categories: z.array(z.string()).min(1)
-})
-
-export async function POST(request: Request) {
-  const body = await request.json()
-
-  try {
-    const validated = CreateMarketSchema.parse(body)
-    // Proceed with validated data
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json({
-        success: false,
-        error: 'Validation failed',
-        details: error.errors
-      }, { status: 400 })
-    }
+// ✅ GOOD: Validate inputs with clear error messages
+function validateUserInput(data: unknown): User {
+  if (!data || typeof data !== 'object') {
+    throw new Error('Invalid input: expected object')
   }
+
+  const { name, email } = data as Record<string, unknown>
+
+  if (typeof name !== 'string' || name.length === 0) {
+    throw new Error('Invalid name: must be non-empty string')
+  }
+
+  if (typeof email !== 'string' || !email.includes('@')) {
+    throw new Error('Invalid email: must be valid email address')
+  }
+
+  return { name, email } as User
 }
 ```
 
 ## File Organization
 
-### Project Structure
+### File Size and Cohesion
+
+**Many small files > Few large files**
 
 ```
+✅ GOOD: Focused files
 src/
-├── app/                    # Next.js App Router
-│   ├── api/               # API routes
-│   ├── markets/           # Market pages
-│   └── (auth)/           # Auth pages (route groups)
-├── components/            # React components
-│   ├── ui/               # Generic UI components
-│   ├── forms/            # Form components
-│   └── layouts/          # Layout components
-├── hooks/                # Custom React hooks
-├── lib/                  # Utilities and configs
-│   ├── api/             # API clients
-│   ├── utils/           # Helper functions
-│   └── constants/       # Constants
-├── types/                # TypeScript types
-└── styles/              # Global styles
+├── utils/
+│   ├── formatDate.ts      # 50 lines
+│   ├── validateEmail.ts   # 30 lines
+│   └── debounce.ts        # 40 lines
+├── types/
+│   ├── user.ts            # 20 lines
+│   └── api.ts             # 30 lines
+
+❌ BAD: Large files
+src/
+├── utils.ts               # 800 lines (mixed concerns)
+└── types.ts               # 500 lines (all types)
 ```
 
-### File Naming
+**Guidelines:**
+- Typical file: 200-400 lines
+- Maximum: 800 lines
+- High cohesion: related code together
+- Low coupling: minimal dependencies
+
+### File Naming Conventions
 
 ```
-components/Button.tsx          # PascalCase for components
-hooks/useAuth.ts              # camelCase with 'use' prefix
-lib/formatDate.ts             # camelCase for utilities
-types/market.types.ts         # camelCase with .types suffix
+UserService.ts             # PascalCase for classes
+formatDate.ts              # camelCase for utilities
+user.types.ts              # camelCase with .types suffix
+constants.ts               # camelCase for constants
 ```
 
 ## Comments & Documentation
@@ -380,52 +327,54 @@ export async function searchMarkets(
 
 ## Performance Best Practices
 
-### Memoization
+### Avoid Premature Optimization
 
 ```typescript
-import { useMemo, useCallback } from 'react'
+// ✅ GOOD: Clear, readable code first
+function findUser(users: User[], id: string): User | undefined {
+  return users.find(user => user.id === id)
+}
 
-// ✅ GOOD: Memoize expensive computations
-const sortedMarkets = useMemo(() => {
-  return markets.sort((a, b) => b.volume - a.volume)
-}, [markets])
-
-// ✅ GOOD: Memoize callbacks
-const handleSearch = useCallback((query: string) => {
-  setSearchQuery(query)
-}, [])
+// ❌ BAD: Premature optimization (unless profiled bottleneck)
+const userMap = new Map(users.map(u => [u.id, u]))
+return userMap.get(id)
 ```
 
-### Lazy Loading
+### Cache Expensive Operations
 
 ```typescript
-import { lazy, Suspense } from 'react'
+// ✅ GOOD: Cache results of expensive computations
+class DataProcessor {
+  private cache = new Map<string, Result>()
 
-// ✅ GOOD: Lazy load heavy components
-const HeavyChart = lazy(() => import('./HeavyChart'))
+  process(input: string): Result {
+    if (this.cache.has(input)) {
+      return this.cache.get(input)!
+    }
 
-export function Dashboard() {
-  return (
-    <Suspense fallback={<Spinner />}>
-      <HeavyChart />
-    </Suspense>
-  )
+    const result = this.expensiveComputation(input)
+    this.cache.set(input, result)
+    return result
+  }
+
+  private expensiveComputation(input: string): Result {
+    // Heavy computation here
+  }
 }
 ```
 
-### Database Queries
+### Efficient Data Access
 
 ```typescript
-// ✅ GOOD: Select only needed columns
-const { data } = await supabase
-  .from('markets')
-  .select('id, name, status')
-  .limit(10)
+// ✅ GOOD: Select only needed data
+const users = await db.query(
+  'SELECT id, name, email FROM users WHERE status = $1 LIMIT 10',
+  ['active']
+)
 
-// ❌ BAD: Select everything
-const { data } = await supabase
-  .from('markets')
-  .select('*')
+// ❌ BAD: Select everything then filter
+const allUsers = await db.query('SELECT * FROM users')
+const activeUsers = allUsers.filter(u => u.status === 'active').slice(0, 10)
 ```
 
 ## Testing Standards
