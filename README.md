@@ -18,13 +18,17 @@ Start with a powerful base of universal components that work across ALL project 
 - Build & Documentation: build-error-resolver, documentation-architect
 - Research: web-research-specialist
 
-**6 Universal Commands:**
+**9 Universal Commands:**
 - `/dev-docs` - Create development documentation
 - `/dev-docs-update` - Update dev docs before context reset
-- `/plan` - Four-phase implementation planning
 - `/code-review` - Comprehensive code review
 - `/tdd` - Test-driven development workflow
 - `/build-fix` - Build error troubleshooting
+- `/ralph-dev` - Start autonomous loop with dev-docs persistence
+- `/ralph-status` - Show Ralph loop status and metrics
+- `/ralph-resume` - Resume paused or crashed Ralph loop
+
+**Note:** Planning now uses Claude Code's built-in plan mode (EnterPlanMode) instead of a custom command.
 
 **3 Universal Skills:**
 - skill-developer - Meta-skill for creating skills
@@ -34,8 +38,10 @@ Start with a powerful base of universal components that work across ALL project 
 **7 Hard Rules:**
 - Security, git workflow, code quality, testing, agents, performance, patterns
 
-**2 Essential Hooks:**
+**Essential Hooks:**
 - Skill auto-activation + file change tracking
+- Ralph autonomous loop (Stop hook for loop continuation)
+- Ralph safety hooks (iteration guard, stuck detection, quality gates, context sync)
 
 ### 📦 Optional Components (`optional-components/`)
 **Add only what your specific project needs:**
@@ -75,8 +81,9 @@ You now have:
 - ✅ File change tracking
 - ✅ Hard rules for security, git, code quality, testing, agents, performance, patterns
 - ✅ 12 universal agents ready to use (planning, code quality, security, testing, build, documentation, research)
-- ✅ 6 universal commands (/dev-docs, /dev-docs-update, /plan, /code-review, /tdd, /build-fix)
+- ✅ 9 universal commands (/dev-docs, /dev-docs-update, /code-review, /tdd, /build-fix, /ralph-dev, /ralph-status, /ralph-resume)
 - ✅ 3 universal skills (skill-developer, coding-standards, tdd-workflow)
+- ✅ Ralph autonomous loop plugin with safety mechanisms
 
 ### Option 2: Add to Existing Project (10 minutes)
 
@@ -245,6 +252,34 @@ Located in [`.claude/rules/`](.claude/rules/), these enforce critical practices:
 
 These rules guide Claude's behavior across all your projects.
 
+### Ralph Autonomous Loop Plugin
+
+The template includes the Ralph Wiggum plugin for autonomous coding loops:
+
+**What It Does:**
+- Automatically continues work across multiple turns without user input
+- Persists context for crash recovery via dev-docs integration
+- Includes safety safeguards: max iterations, runtime limits, stuck detection
+
+**Commands:**
+- `/ralph-dev "<task>"` - Start loop with full persistence (recommended)
+- `/ralph-status` - Check loop progress and metrics
+- `/ralph-resume` - Resume from paused or crashed state
+
+**Example:**
+```bash
+/ralph-dev "Build a REST API with authentication and tests"
+```
+
+**Safety Mechanisms:**
+- Max iterations (default: 50)
+- Runtime limit (default: 4 hours)
+- Stuck detection (3 identical failures)
+- Idle timeout (no file changes for 5 iterations)
+- Quality gates (tests/lint each iteration)
+
+See [.claude/plugins/ralph-wiggum/README.md](.claude/plugins/ralph-wiggum/README.md) for full documentation.
+
 ### Modular Skills (500-Line Rule)
 
 Large skills hit context limits. This template uses modular structure:
@@ -267,11 +302,12 @@ Claude loads the main file first, then resources only when explicitly referenced
 claude-code-template/
 ├── .claude/                    # CORE TEMPLATE (copy this)
 │   ├── settings.json           # Essential hooks configuration
-│   ├── hooks/                  # Auto-activation + file tracking (2 essential hooks)
+│   ├── hooks/                  # Auto-activation, file tracking, Ralph safety hooks
 │   ├── skills/                 # 3 universal skills (skill-developer, coding-standards, tdd-workflow)
 │   ├── rules/                  # 7 hard rules (security, git, code quality, testing, agents, performance, patterns)
 │   ├── agents/                 # 12 universal agents (planning, code quality, security, testing, build, docs, research)
-│   └── commands/               # 6 universal commands (dev-docs, plan, code-review, tdd, build-fix)
+│   ├── commands/               # 9 universal commands (dev-docs, code-review, tdd, build-fix, ralph-*)
+│   └── plugins/                # Plugins (ralph-wiggum autonomous loop)
 │
 ├── optional-components/        # Add only what you need
 │   ├── skills/                 # 9 domain-specific skills (organized by category)
@@ -379,10 +415,11 @@ Skills are powerful but often sit unused. This template:
 
 **Base Template:**
 - 12 universal agents
-- 6 universal commands
+- 9 universal commands (including Ralph loop)
 - 3 universal skills
 - 7 hard rules
-- 2 essential hooks
+- Essential hooks (activation + Ralph safety)
+- Ralph autonomous loop plugin
 
 **Optional Components:**
 - 9 domain skills

@@ -1,15 +1,22 @@
 # Essential Hooks
 
-The two hooks that power the auto-activation system.
+The hooks that power the auto-activation system and Ralph autonomous loop.
 
 ---
 
 ## What's Included
 
-This directory contains **2 essential hooks** that enable skill auto-activation and file tracking:
+This directory contains essential hooks for skill auto-activation, file tracking, and Ralph autonomous loop safety:
 
+**Core Hooks:**
 1. **skill-activation-prompt** - Auto-suggests skills based on context
 2. **post-tool-use-tracker** - Tracks file changes for smarter suggestions
+
+**Ralph Safety Hooks:**
+3. **ralph-iteration-guard** - Enforces max iterations and runtime limits
+4. **ralph-stuck-detector** - Detects repeated errors and stuck conditions
+5. **ralph-quality-gate** - Runs tests/lint before each iteration
+6. **ralph-context-sync** - Persists context for crash recovery
 
 These hooks require **no customization** and work out of the box for any project.
 
@@ -39,6 +46,58 @@ These hooks require **no customization** and work out of the box for any project
 3. Stores context for future skill suggestions
 
 **Result:** File-based skill triggering works (e.g., editing `routes/users.ts` suggests route-tester)
+
+### Ralph Autonomous Loop Hooks
+
+These hooks work together to provide safe autonomous coding loops:
+
+#### ralph-iteration-guard.sh (PreToolUse)
+
+**Runs:** Before each tool use during Ralph loop
+
+**Does:**
+1. Checks current iteration against max limit
+2. Verifies runtime hasn't exceeded timeout
+3. Blocks operations if limits exceeded
+4. Warns on idle timeout (no file changes)
+
+**Result:** Prevents runaway loops by enforcing hard limits
+
+#### ralph-stuck-detector.sh (PostToolUse)
+
+**Runs:** After each tool use during Ralph loop
+
+**Does:**
+1. Tracks error patterns across iterations
+2. Detects repeated identical failures (3+ times)
+3. Pauses loop for manual intervention
+4. Provides escape analysis and recommendations
+
+**Result:** Prevents infinite loops on unsolvable errors
+
+#### ralph-quality-gate.sh (PostToolUse)
+
+**Runs:** After file modifications during Ralph loop
+
+**Does:**
+1. Runs TypeScript type checking
+2. Executes test suite
+3. Runs lint checks
+4. Updates state with pass/fail status
+
+**Result:** Ensures code quality throughout autonomous development
+
+#### ralph-context-sync.sh (PostToolUse)
+
+**Runs:** After significant changes during Ralph loop
+
+**Does:**
+1. Creates/updates dev-docs structure in `dev/active/ralph-<task>/`
+2. Updates context and tasks files
+3. Creates numbered state checkpoints
+4. Maintains iteration log
+
+**Result:** Enables crash recovery by persisting state every iteration
 
 ---
 
@@ -232,10 +291,27 @@ hooks/
 ├── skill-activation-prompt.sh    # Shell wrapper for TypeScript
 ├── skill-activation-prompt.ts    # Main skill activation logic
 ├── post-tool-use-tracker.sh      # Shell wrapper
+├── ralph-iteration-guard.sh      # Max iterations/runtime enforcement
+├── ralph-stuck-detector.sh       # Stuck detection and pausing
+├── ralph-quality-gate.sh         # Test/lint quality gates
+├── ralph-context-sync.sh         # Dev-docs persistence
 ├── package.json                  # npm dependencies
 ├── package-lock.json             # Lock file
 ├── tsconfig.json                 # TypeScript config
 └── README.md                     # This file
+```
+
+**Ralph Plugin Core (in .claude/plugins/ralph-wiggum/):**
+```
+plugins/ralph-wiggum/
+├── hooks/
+│   └── stop-hook.sh              # Core loop continuation logic
+├── scripts/
+│   └── ralph-utils.sh            # Utility functions
+├── commands/
+│   ├── ralph-loop.md             # Basic loop initialization
+│   └── cancel-ralph.md           # Loop cancellation
+└── README.md                     # Plugin documentation
 ```
 
 ---
@@ -244,5 +320,6 @@ hooks/
 
 - **Skill activation:** See [../skills/README.md](../skills/README.md)
 - **skill-rules.json:** See [../skills/skill-rules.json](../skills/skill-rules.json)
+- **Ralph plugin:** See [../plugins/ralph-wiggum/README.md](../plugins/ralph-wiggum/README.md)
 - **Advanced hooks:** See [../../optional-components/hooks/README.md](../../optional-components/hooks/README.md)
 - **Main guide:** See [../../README.md](../../README.md)

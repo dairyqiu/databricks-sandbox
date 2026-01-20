@@ -229,6 +229,68 @@ No need to explain what you were doing - it's all documented!
 
 ---
 
+## Integration with Ralph Autonomous Loop
+
+The dev docs pattern integrates seamlessly with the Ralph autonomous loop for hands-off development:
+
+### Using /ralph-dev
+
+```bash
+/ralph-dev "Build a REST API with authentication and tests"
+```
+
+**What happens:**
+1. Ralph creates `dev/active/ralph-build-rest-api/` directory
+2. Generates plan, context, and tasks files automatically
+3. Syncs context **every iteration** for crash recovery
+4. Creates numbered checkpoints in `checkpoints/` subdirectory
+
+**Directory Structure:**
+```
+dev/active/ralph-build-rest-api/
+├── build-rest-api-plan.md       # Task description and approach
+├── build-rest-api-context.md    # Current progress and blockers
+├── build-rest-api-tasks.md      # Task checklist and status
+├── build-rest-api-iterations.log # Iteration history
+└── checkpoints/
+    ├── state-iteration-1.json
+    ├── state-iteration-2.json
+    └── ...                      # Keeps last 10 checkpoints
+```
+
+### Recovery with /ralph-resume
+
+If Claude crashes or context resets:
+
+```bash
+/ralph-resume
+```
+
+This:
+1. Finds latest checkpoint in `dev/active/ralph-<task>/checkpoints/`
+2. Restores full state from JSON
+3. Reads context from `*-context.md`
+4. Continues exactly where it left off
+
+**Options:**
+- `--extend 20` - Add 20 more iterations
+- `--reset-errors` - Clear error counts and retry
+
+### vs Manual Dev Docs
+
+| Feature | Manual (/dev-docs) | Ralph (/ralph-dev) |
+|---------|-------------------|-------------------|
+| Creation | User triggers | Automatic |
+| Updates | User triggers /dev-docs-update | Every iteration |
+| Checkpoints | None | Automatic (last 10) |
+| Recovery | Manual reading | One command |
+| Progress | Session-based | Continuous |
+
+**Use Manual When:** You want control over progress tracking
+**Use Ralph When:** You want hands-off autonomous development
+
+---
+
 ## Integration with Built-in Plan Mode
 
 ### Planning Workflow

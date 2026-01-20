@@ -43,6 +43,23 @@ Claude delegates to specialized agents:
 - Security concerns → security-reviewer agent
 - Build failures → build-error-resolver agent
 
+## Ralph Autonomous Loop
+For hands-off autonomous development:
+- `/ralph-dev "<task>"` → Starts autonomous loop with full persistence
+- `/ralph-status` → Check progress, modified files, test status
+- `/ralph-resume` → Continue after crash or context reset
+
+**Safety Mechanisms (all enabled):**
+- Max 50 iterations, 4-hour runtime limit
+- Stuck detection (3 identical failures)
+- Idle timeout (5 iterations without file changes)
+- Quality gates (tests/lint each iteration)
+- Per-iteration context sync for crash recovery
+
+**When to use:** Complex multi-step features, long implementations, hands-off development
+
+See [.claude/plugins/ralph-wiggum/README.md](.claude/plugins/ralph-wiggum/README.md) for details.
+
 ## Project Structure
 ```
 .claude/
