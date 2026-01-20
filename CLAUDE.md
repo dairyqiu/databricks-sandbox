@@ -13,6 +13,9 @@ This is the base template for Claude Code projects with universal skills, agents
 | `/build-fix` | Fix build/compilation errors |
 | `/create-skill [name]` | Interactive wizard to scaffold a new skill |
 | `/create-agent [name]` | Interactive wizard to scaffold a new agent |
+| `/ralph-dev "<task>"` | Start autonomous loop with dev-docs persistence |
+| `/ralph-status` | Show current Ralph loop status and metrics |
+| `/ralph-resume` | Resume paused or crashed Ralph loop |
 
 ## Planning Workflow
 For complex features, Claude proactively uses built-in plan mode:
@@ -46,8 +49,9 @@ Claude delegates to specialized agents:
 ├── skills/          # Domain knowledge (auto-activates)
 ├── rules/           # Behavioral guidelines (always active)
 ├── agents/          # Specialized task handlers (auto-invoked)
-├── commands/        # Slash commands (/dev-docs, /tdd, etc.)
-└── hooks/           # Automation scripts (skill activation, tracking)
+├── commands/        # Slash commands (/dev-docs, /tdd, /ralph-dev, etc.)
+├── hooks/           # Automation scripts (skill activation, tracking)
+└── plugins/         # Extensions (ralph-wiggum autonomous loop)
 ```
 
 ## Customization

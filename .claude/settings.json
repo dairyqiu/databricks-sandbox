@@ -7,7 +7,24 @@
       "Write:*",
       "MultiEdit:*",
       "NotebookEdit:*",
-      "Bash:*"
+      "WebSearch",
+      "WebFetch",
+      "Bash(npm run *)",
+      "Bash(git status)",
+      "Bash(git diff)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(npm install *)"
+    ],
+    "deny": [
+      "Read(./.env*)",
+      "Read(./secrets/**)",
+      "Read(./**/credentials*)",
+      "Bash(rm -rf:*)",
+      "Bash(curl:*)"
     ],
     "defaultMode": "acceptEdits"
   },
@@ -29,6 +46,16 @@
           {
             "type": "command",
             "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/post-tool-use-tracker.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/plugins/ralph-wiggum/hooks/stop-hook.sh"
           }
         ]
       }
