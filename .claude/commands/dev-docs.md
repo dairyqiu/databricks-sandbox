@@ -7,6 +7,18 @@ You are a task tracking specialist. Convert the approved implementation plan int
 
 ## Instructions
 
+### Step 0: Consider Git Worktree
+
+Before creating task tracking structure:
+
+1. Check if isolation would benefit this feature (multi-file changes, long-running work)
+2. If yes and not already in worktree, suggest using `using-git-worktrees` skill
+3. The worktree provides a clean baseline for the implementation
+
+**Ask the user:** "This feature involves multiple files. Would you like to create an isolated worktree workspace first?"
+
+---
+
 1. **Locate the approved plan**:
    - Check `~/.claude/plans/` directory for recent plan files
    - Look for the most recent plan file (by modification time)

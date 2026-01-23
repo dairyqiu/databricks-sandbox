@@ -104,6 +104,30 @@
           "**/tests/**"
         ]
       }
+    },
+    "using-git-worktrees": {
+      "type": "methodology",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Create isolated git worktrees for feature work",
+      "promptTriggers": {
+        "keywords": [
+          "worktree",
+          "git worktree",
+          "isolated workspace",
+          "feature branch",
+          "new feature",
+          "start feature",
+          "implement feature"
+        ],
+        "intentPatterns": [
+          "(create|setup|start).*?(worktree|isolated|workspace)",
+          "(implement|build|add|create).*?(feature|endpoint|component)",
+          "(begin|start).*?(feature|work|implementation)",
+          "ralph-dev",
+          "dev-docs"
+        ]
+      }
     }
   },
   "notes": {
