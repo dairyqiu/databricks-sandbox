@@ -65,6 +65,39 @@ Hooks are configured in two locations:
 
 ---
 
+## TDD Enforcement Hook
+
+| Hook | Type | Purpose |
+|------|------|---------|
+| `tdd-enforcement.sh` | PreToolUse | Blocks source file edits without corresponding test file |
+
+**How it works:**
+1. Intercepts Edit/Write tool calls
+2. Checks if file is a source file (`.ts`, `.tsx`, `.js`, `.jsx`)
+3. Looks for corresponding test file (`*.test.ts` or `*.integration.test.ts`)
+4. Blocks edit if no test exists, suggests creating one first
+
+**To enable:** Add to `.claude/settings.json`:
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/tdd-enforcement.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+---
+
 ## Ralph Safety Hooks
 
 Located in `.claude/hooks/` but configured via Ralph plugin:
@@ -187,6 +220,7 @@ hooks/
 ├── ralph-quality-gate.sh         # Test/lint gates
 ├── ralph-context-sync.sh         # Dev-docs persistence
 ├── error-handling-reminder.ts    # Error handling patterns
+├── tdd-enforcement.sh            # TDD enforcement (blocks edits without tests)
 ├── package.json                  # Dependencies (tsx, typescript)
 ├── tsconfig.json                 # TypeScript config
 ├── CONFIG.md                     # Additional configuration docs

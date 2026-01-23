@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Project-specific configuration for Claude Code template",
+  "projectType": "template",
+  "testFramework": "vitest",
+  "packageManager": "bun",
+  "tddEnforcement": "block",
+  "paths": {
+    "source": "src/",
+    "tests": "**/*.test.ts",
+    "integrationTests": "**/*.integration.test.ts"
+  },
+  "customSkills": [],
+  "templateVersion": "1.0.0",
+  "initialized": "2024-01-15T00:00:00Z",
+  "notes": {
+    "projectType_options": ["fullstack", "backend", "frontend", "cli", "library", "template"],
+    "testFramework_options": ["vitest", "jest", "playwright", "none"],
+    "packageManager_options": ["bun", "npm", "pnpm", "yarn"],
+    "tddEnforcement_options": ["block", "warn", "suggest", "off"]
+  }
+}

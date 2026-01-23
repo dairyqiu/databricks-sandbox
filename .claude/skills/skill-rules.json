@@ -78,9 +78,9 @@
     },
     "tdd-workflow": {
       "type": "methodology",
-      "enforcement": "suggest",
-      "priority": "high",
-      "description": "Test-driven development with 80% minimum coverage",
+      "enforcement": "block",
+      "priority": "critical",
+      "description": "Integration-First TDD with 80% minimum coverage. Walking Skeleton approach.",
       "promptTriggers": {
         "keywords": [
           "TDD",
@@ -88,10 +88,13 @@
           "write test",
           "test first",
           "test coverage",
-          "testing"
+          "testing",
+          "integration test",
+          "walking skeleton",
+          "integration-first"
         ],
         "intentPatterns": [
-          "(implement|add|create).*?feature",
+          "(implement|add|create).*?(feature|endpoint|component)",
           "(fix|resolve).*?bug",
           "test.*?(first|driven)"
         ]
@@ -101,7 +104,8 @@
           "**/*.test.ts",
           "**/*.spec.ts",
           "**/__tests__/**",
-          "**/tests/**"
+          "**/tests/**",
+          "**/*.integration.test.ts"
         ]
       }
     },
@@ -131,14 +135,14 @@
     }
   },
   "notes": {
-    "setup": "Universal base configuration with 4 skills. Add project-specific skills from optional-components/skills/ as needed.",
+    "setup": "Universal base configuration with 5 skills. Add project-specific skills from optional-components/skills/ as needed.",
     "enforcement_types": {
       "suggest": "Skill suggestion appears but doesn't block execution",
       "block": "Requires skill to be used before proceeding (guardrail)",
       "warn": "Shows warning but allows proceeding"
     },
     "priority_levels": {
-      "critical": "Highest - Always trigger when matched",
+      "critical": "Highest - Always trigger when matched (TDD uses this)",
       "high": "Important - Trigger for most matches",
       "medium": "Moderate - Trigger for clear matches",
       "low": "Optional - Trigger only for explicit matches"
@@ -147,6 +151,7 @@
       "pathPatterns": "Update to match your project structure",
       "keywords": "Add domain-specific terms",
       "intentPatterns": "Use regex for user intent matching"
-    }
+    },
+    "tdd_enforcement": "Set to 'block' to require tests before implementation. Use 'suggest' while learning."
   }
 }

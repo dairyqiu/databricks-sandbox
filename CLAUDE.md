@@ -1,87 +1,50 @@
-# Claude Code Multi-Project Starter Template
+# Claude Code Template
 
-## Quick Start
-This is the base template for Claude Code projects with universal skills, agents, and rules.
-
-## Available Commands
+## Commands
 | Command | Purpose |
 |---------|---------|
-| `/dev-docs [task]` | Convert approved plan to persistent task tracking |
-| `/dev-docs-update` | Update task progress before context reset |
-| `/code-review` | Review recent code changes |
-| `/tdd [feature]` | Test-driven development workflow |
+| `/feature [name]` | Start feature with plan + tracking |
+| `/init-project` | Interactive project setup wizard |
+| `/tdd` | Test-driven development (integration-first) |
+| `/tdd-check` | Verify TDD compliance |
+| `/dev-docs [task]` | Convert plan to persistent tracking |
+| `/dev-docs-update` | Sync progress before context reset |
 | `/build-fix` | Fix build/compilation errors |
-| `/create-skill [name]` | Interactive wizard to scaffold a new skill |
-| `/create-agent [name]` | Interactive wizard to scaffold a new agent |
-| `/ralph-dev "<task>"` | Start autonomous loop with dev-docs persistence |
-| `/ralph-status` | Show current Ralph loop status and metrics |
-| `/ralph-resume` | Resume paused or crashed Ralph loop |
+| `/code-review` | Review recent changes |
+| `/ralph-dev "task"` | Autonomous development loop |
+| `/create-skill` | Create new skill |
+| `/create-agent` | Create new agent |
 
-## Planning Workflow
-For complex features, Claude proactively uses built-in plan mode:
-1. **Plan** - Claude enters plan mode → Creates plan in `~/.claude/plans/` → You approve
-2. **Persist** - `/dev-docs [feature]` → Converts plan to tracking structure in `dev/active/`
-3. **Implement** - `/tdd` → Build with tests (update context with `/dev-docs-update`)
-4. **Document** - `documentation-architect` agent → Create reference docs
+## Workflow
+```
+/feature → Plan → Approve → /dev-docs → Implement (manual or --ralph)
+```
 
 ## Active Rules (Always Enforced)
-- **Security**: No hardcoded secrets, validate all inputs ([.claude/rules/security.md](.claude/rules/security.md))
-- **Git**: Use conventional commits ([.claude/rules/git-workflow.md](.claude/rules/git-workflow.md))
-- **Code**: Immutable patterns, files <800 lines ([.claude/rules/coding-style.md](.claude/rules/coding-style.md))
-- **Testing**: 80% minimum coverage ([.claude/rules/testing.md](.claude/rules/testing.md))
+- **Security**: No secrets, validate inputs ([rules/security.md](.claude/rules/security.md))
+- **Git**: Conventional commits ([rules/git-workflow.md](.claude/rules/git-workflow.md))
+- **Code**: Immutable, <800 lines ([rules/coding-style.md](.claude/rules/coding-style.md))
+- **Testing**: 80% coverage, TDD ([rules/testing.md](.claude/rules/testing.md))
 
-## Skills (Auto-Activate)
-Skills suggest themselves based on context:
-- Mention "skill" → skill-developer activates
-- Mention "quality/refactor/standards" → coding-standards activates
-- Mention "test/TDD" → tdd-workflow activates
-
-## Agents (Auto-Invoke)
-Claude delegates to specialized agents:
-- Complex features → Built-in plan mode (EnterPlanMode)
-- After writing code → code-reviewer agent
-- Security concerns → security-reviewer agent
-- Build failures → build-error-resolver agent
-
-## Ralph Autonomous Loop
-For hands-off autonomous development:
-- `/ralph-dev "<task>"` → Starts autonomous loop with full persistence
-- `/ralph-status` → Check progress, modified files, test status
-- `/ralph-resume` → Continue after crash or context reset
-
-**Safety Mechanisms (all enabled):**
-- Max 50 iterations, 4-hour runtime limit
-- Stuck detection (3 identical failures)
-- Idle timeout (5 iterations without file changes)
-- Quality gates (tests/lint each iteration)
-- Per-iteration context sync for crash recovery
-
-**When to use:** Complex multi-step features, long implementations, hands-off development
-
-See [.claude/plugins/ralph-wiggum/README.md](.claude/plugins/ralph-wiggum/README.md) for details.
+## Auto-Behaviors
+- Skills activate on keywords (TDD, skill, test, etc.)
+- Agents invoke for complex tasks (code-reviewer, security-reviewer)
+- TDD blocks edits without tests (when enforcement=block)
 
 ## Project Structure
 ```
 .claude/
-├── skills/          # Domain knowledge (auto-activates)
-├── rules/           # Behavioral guidelines (always active)
-├── agents/          # Specialized task handlers (auto-invoked)
-├── commands/        # Slash commands (/dev-docs, /tdd, /ralph-dev, etc.)
-├── hooks/           # Automation scripts (skill activation, tracking)
-└── plugins/         # Extensions (ralph-wiggum autonomous loop)
+├── skills/      # Auto-activating domain knowledge
+├── rules/       # Always-active guidelines
+├── agents/      # Specialized task handlers
+├── commands/    # Slash commands
+└── hooks/       # Automation scripts
 ```
 
-## Customization
-See [TEMPLATE_SETUP_GUIDE.md](TEMPLATE_SETUP_GUIDE.md) for:
-- Adding domain-specific skills from optional-components/
-- Customizing rules for your team
-- Configuring hooks and automation
-- Model selection strategy (Haiku/Sonnet/Opus)
-
 ## For Claude
-When working in this project:
-1. Follow all rules in `.claude/rules/` (always active)
-2. Let skills auto-activate based on context (don't force)
-3. Invoke agents proactively for complex tasks
-4. Use commands for common workflows
-5. Respect 500-line skill limit (universal standards only)
+1. Follow `.claude/rules/` (always active)
+2. Let skills auto-activate (don't force)
+3. Invoke agents proactively
+4. Use TDD (integration-first)
+
+See [QUICKSTART.md](QUICKSTART.md) | [TEMPLATE_SETUP_GUIDE.md](TEMPLATE_SETUP_GUIDE.md)
