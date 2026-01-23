@@ -1,0 +1,32 @@
+{
+  "name": "ralph-wiggum",
+  "version": "1.0.0",
+  "description": "Self-referential autonomous loop plugin with dev-docs integration and loop prevention safeguards",
+  "author": "Anthropic",
+  "commands": [
+    "ralph-loop",
+    "cancel-ralph",
+    "ralph-status",
+    "ralph-resume"
+  ],
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/plugins/ralph-wiggum/hooks/stop-hook.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "settings": {
+    "maxIterations": 50,
+    "runtimeLimitMinutes": 240,
+    "idleTimeoutMinutes": 30,
+    "stuckThreshold": 3,
+    "contextSyncInterval": 1,
+    "qualityGatesEnabled": true
+  }
+}

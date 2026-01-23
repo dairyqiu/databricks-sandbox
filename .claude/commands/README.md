@@ -1,6 +1,6 @@
 # Universal Slash Commands
 
-**Five essential commands available in the base template**
+**Eight essential commands available in the base template**
 
 These commands work across ALL projects regardless of tech stack - AI research, web apps, Mac apps, data science, etc.
 
@@ -142,13 +142,97 @@ These commands work across ALL projects regardless of tech stack - AI research, 
 
 ---
 
+### Ralph Autonomous Loop
+
+#### /ralph-dev
+
+**Purpose:** Start autonomous coding loop with dev-docs persistence
+
+**Usage:**
+```
+/ralph-dev "Build a REST API with authentication and tests"
+```
+
+**What It Does:**
+- Creates persistent task structure in `dev/active/ralph-<task>/`
+- Automatically continues work across turns without user input
+- Syncs context every iteration for crash recovery
+- Enables quality gates (tests/lint) by default
+- Creates checkpoints for recovery
+
+**When to Use:**
+- Complex multi-step features
+- Long-running implementation tasks
+- When you want hands-off autonomous development
+- Tasks that benefit from automatic progress tracking
+
+**Options:**
+- `--max-iterations N` (default: 50) - Maximum loop iterations
+- `--timeout N` (default: 240) - Max runtime in minutes
+- `--quality-gates` (default: enabled) - Run tests/lint each iteration
+
+---
+
+#### /ralph-status
+
+**Purpose:** Show current Ralph loop status and metrics
+
+**Usage:**
+```
+/ralph-status
+/ralph-status --verbose
+```
+
+**What It Does:**
+- Displays task description and progress
+- Shows current iteration and limits
+- Lists modified files
+- Reports quality/test status
+- Shows error tracking and pause state
+
+**When to Use:**
+- Check progress on long-running loops
+- Debug stuck or paused loops
+- Review what files have been modified
+
+---
+
+#### /ralph-resume
+
+**Purpose:** Resume paused or crashed Ralph loop
+
+**Usage:**
+```
+/ralph-resume
+/ralph-resume --extend 20
+/ralph-resume --reset-errors
+```
+
+**What It Does:**
+- Restores state from latest checkpoint
+- Clears pause flag and continues execution
+- Can extend iteration limits or reset error counts
+
+**When to Use:**
+- After context reset or crash
+- When loop paused due to stuck detection
+- To add more iterations to a running task
+
+**Options:**
+- `--extend N` - Add N iterations to max limit
+- `--extend-timeout N` - Add N minutes to timeout
+- `--reset-errors` - Clear error counts and retry
+
+---
+
 ## Why These Are in Base Template
 
-These 5 commands are **universal** - they apply to ALL project types:
+These 8 commands are **universal** - they apply to ALL project types:
 - **Development tracking** (/dev-docs, /dev-docs-update) - Essential for context management across sessions
 - **Code quality** (/code-review) - Universal across all languages
 - **Testing** (/tdd) - Test-driven development applies everywhere
 - **Build troubleshooting** (/build-fix) - All projects have builds
+- **Autonomous loops** (/ralph-dev, /ralph-status, /ralph-resume) - Hands-off development for complex tasks
 
 **Note on Planning:** Claude Code's built-in plan mode (EnterPlanMode) handles planning automatically for complex features. No custom command needed.
 

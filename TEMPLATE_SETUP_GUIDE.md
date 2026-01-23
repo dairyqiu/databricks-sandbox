@@ -41,8 +41,9 @@ npm install
 - ✅ File change tracking
 - ✅ Hard rules for security, git, code quality, testing, agents, performance, patterns
 - ✅ 12 universal agents ready to use (planning, code quality, security, testing, build, documentation, research)
-- ✅ 6 universal commands (/dev-docs, /dev-docs-update, /plan, /code-review, /tdd, /build-fix)
+- ✅ 9 universal commands (/dev-docs, /dev-docs-update, /code-review, /tdd, /build-fix, /ralph-dev, /ralph-status, /ralph-resume)
 - ✅ 3 universal skills (skill-developer, coding-standards, tdd-workflow)
+- ✅ Ralph autonomous loop plugin with safety mechanisms
 
 ### Option 2: Add to Existing Project
 
@@ -82,9 +83,10 @@ npm install
 ```
 .claude/
 ├── settings.json           # Essential hooks configuration
-├── hooks/                  # Auto-activation + file tracking (2 essential hooks)
+├── hooks/                  # Auto-activation, file tracking, Ralph safety hooks
 │   ├── skill-activation-prompt.sh/ts
 │   ├── post-tool-use-tracker.sh
+│   ├── ralph-*.sh          # Ralph safety hooks (4 files)
 │   └── package.json
 ├── skills/                 # 3 universal skills
 │   ├── skill-developer/    # Meta-skill for creating skills
@@ -99,13 +101,17 @@ npm install
 │   ├── agents.md           # Agent orchestration
 │   ├── performance.md      # Performance optimization
 │   └── patterns.md         # Common patterns
-├── commands/               # 6 universal commands
+├── commands/               # 9 universal commands
 │   ├── dev-docs.md         # Create dev documentation
 │   ├── dev-docs-update.md  # Update dev docs
-│   ├── plan.md             # Implementation planning
 │   ├── code-review.md      # Comprehensive code review
 │   ├── tdd.md              # TDD workflow
-│   └── build-fix.md        # Build troubleshooting
+│   ├── build-fix.md        # Build troubleshooting
+│   ├── ralph-dev.md        # Autonomous loop with persistence
+│   ├── ralph-status.md     # Loop status reporting
+│   └── ralph-resume.md     # Resume from crash/pause
+├── plugins/                # Plugins
+│   └── ralph-wiggum/       # Autonomous loop plugin
 └── agents/                 # 12 universal agents
     ├── planner.md          # Four-phase planning
     ├── architect.md        # System design
@@ -480,16 +486,47 @@ Edit [`.claude/settings.json`](.claude/settings.json):
 
 ### Add Slash Commands
 
-See [`optional-components/commands/README.md`](optional-components/commands/README.md) for 12 commands:
+See [`optional-components/commands/README.md`](optional-components/commands/README.md) for additional commands:
 
 ```bash
 # Copy commands you need
 cp optional-components/commands/tdd.md .claude/commands/
-cp optional-components/commands/plan.md .claude/commands/
 cp optional-components/commands/code-review.md .claude/commands/
 ```
 
 Commands auto-activate when you type `/command-name`.
+
+### Using Ralph Autonomous Loop
+
+The template includes the Ralph Wiggum plugin for autonomous coding loops.
+
+**Quick Start:**
+
+```bash
+# Start an autonomous loop with dev-docs persistence
+/ralph-dev "Build a REST API with authentication and tests"
+
+# Check progress
+/ralph-status
+
+# Resume after crash or context reset
+/ralph-resume
+```
+
+**Safety Mechanisms (all enabled by default):**
+- Max iterations (50) - Hard limit on loop count
+- Runtime limit (4 hours) - Maximum execution time
+- Stuck detection - Exits after 3 identical failures
+- Idle timeout - Exits if no file changes for 5 iterations
+- Quality gates - Runs tests/lint each iteration
+- Context sync - Persists state every iteration for recovery
+
+**When to Use:**
+- Complex multi-step features
+- Long-running implementation tasks
+- When you want hands-off autonomous development
+
+**Learn More:** See [.claude/plugins/ralph-wiggum/README.md](.claude/plugins/ralph-wiggum/README.md)
 
 ---
 
