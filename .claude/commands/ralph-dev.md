@@ -64,6 +64,30 @@ Create `.claude/ralph-state.json`:
 
 Create `dev/active/ralph-<slug>/` with:
 
+### Step 3.5: Consider Git Worktree
+
+For feature work that benefits from isolation:
+
+1. Check if already in a worktree: `git rev-parse --git-dir`
+2. If not in worktree, consider using the `using-git-worktrees` skill to:
+   - Create isolated workspace at `.worktrees/ralph-<slug>/`
+   - Run dependency installation
+   - Verify baseline tests pass
+3. Continue Ralph loop in the worktree directory (if created)
+
+**When to use worktree:**
+- Multi-file feature implementations
+- Changes that benefit from clean baseline
+- Long-running autonomous work
+- Work that might need to be abandoned/shelved
+
+**When to skip worktree:**
+- Simple bug fixes
+- Documentation updates
+- Quick changes to existing code
+
+---
+
 **<slug>-plan.md:**
 ```markdown
 # Ralph Dev Session: <task>
