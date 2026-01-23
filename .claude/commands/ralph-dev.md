@@ -135,7 +135,36 @@ Output `<promise>COMPLETE</promise>` when:
 (Moved here when done)
 ```
 
-### Step 4: Begin Loop
+### Step 4: Create Native Tasks
+
+Before starting the loop, create Tasks for real-time visibility:
+
+1. **Create parent Task** for the overall Ralph task:
+   ```
+   TaskCreate:
+     subject: "Ralph: <task description>"
+     description: "Autonomous implementation of: <full task>\n\nMax iterations: <N>\nQuality gates: Enabled"
+     activeForm: "Running Ralph loop"
+   ```
+
+2. **This Task provides**:
+   - Quick visibility into "what Ralph is doing"
+   - Current iteration status
+   - Can be viewed via `/tasks` or TaskList
+
+3. **During each iteration**, update the Task:
+   - Use `TaskUpdate` to modify description with current focus
+   - Include iteration number and current subtask
+   - Example: "Iteration 3/50: Creating user model"
+
+4. **Tasks vs Dev-docs roles**:
+   - **Tasks**: Real-time "what's happening now" UI
+   - **Dev-docs**: Persistent checkpoint system for crash recovery
+   - `/ralph-status` remains the primary dashboard with full metrics
+
+---
+
+### Step 5: Begin Loop
 
 Output message to start the loop:
 

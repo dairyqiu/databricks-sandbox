@@ -50,6 +50,51 @@ If switching to a new conversation:
 - Any uncommitted changes that need attention
 - Test commands to verify work
 
+### 6. Sync Native Tasks
+
+After updating dev-docs files, sync the Tasks list to match:
+
+1. **Read current task state** from `[task]-tasks.md`
+2. **Update Tasks status** to match dev-docs checkbox state:
+   - `- [x]` items → `TaskUpdate` with `status: "completed"`
+   - `- [ ]` items being worked on → `status: "in_progress"`
+   - New discovered tasks → `TaskCreate`
+3. **Verify sync** with `TaskList`
+
+This keeps Tasks (the UI) in sync with dev-docs (the source of truth).
+
+### 7. Show "What Changed?" Summary
+
+Read from tracker cache and display a session summary:
+
+1. **Check for tracker data** at `.claude/tsc-cache/*/`:
+   - `edited-files.log` - Files modified this session
+   - `affected-repos.txt` - Repos with changes
+   - `commands.txt` - Suggested build/typecheck commands
+
+2. **Display summary** (if data exists):
+   ```
+   ## What Changed This Session
+
+   ### Most-Edited Files
+   - path/to/file.ts (3 edits)
+   - path/to/other.ts (2 edits)
+
+   ### Affected Areas
+   - frontend
+   - backend/api
+
+   ### Suggested Commands
+   - cd frontend && pnpm build
+   - cd backend && npx tsc --noEmit
+   ```
+
+3. **If no tracker data**, skip this section gracefully.
+
+This provides a quick overview of session changes for the user.
+
+---
+
 ## Additional Context: $ARGUMENTS
 
 **Priority**: Focus on capturing information that would be hard to rediscover or reconstruct from code alone.

@@ -72,7 +72,37 @@ Before creating task tracking structure:
 - Reference `TROUBLESHOOTING.md` for common issues to avoid (if exists)
 - Use `dev/README.md` for task management guidelines (if exists)
 
+### Step 6: Create Native Tasks
+
+After creating the dev-docs files, also create a Tasks list for real-time UI tracking:
+
+1. **Create parent tasks for each phase** in the plan:
+   - Use `TaskCreate` for each phase/section heading
+   - Include phase description and acceptance criteria
+   - Set `activeForm` to present continuous (e.g., "Implementing authentication")
+
+2. **Create child tasks for each checklist item** from `[task]-tasks.md`:
+   - Use `TaskCreate` for each `- [ ]` item
+   - Include file paths in task descriptions for navigation
+   - Set `activeForm` appropriately (e.g., "Creating user model")
+
+3. **Set up dependencies** between phases:
+   - Use `TaskUpdate` with `addBlockedBy` to establish phase ordering
+   - Phase 2 tasks blocked by Phase 1 completion, etc.
+
+4. **Verify Tasks were created**:
+   - Use `TaskList` to confirm tasks appear
+   - Report task count to user
+
+**Why both?**
+- **Tasks**: Real-time UI for progress visibility during the session
+- **Dev-docs**: Persistent source of truth that survives context resets/crashes
+- If Tasks don't persist across sessions, dev-docs allows full recovery
+
+---
+
 **Workflow Integration:**
 - For complex features: Claude enters plan mode → creates plan in `~/.claude/plans/` → user approves → `/dev-docs` converts to persistent tracking
 - The plan files in `~/.claude/plans/` are session-scoped. This command persists them to `dev/active/` for context reset survival.
 - Update progress frequently with `/dev-docs-update` command during implementation.
+- Tasks provide in-session visibility; dev-docs provide cross-session persistence.
