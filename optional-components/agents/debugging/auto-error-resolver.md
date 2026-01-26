@@ -2,6 +2,7 @@
 name: auto-error-resolver
 description: Automatically fix TypeScript compilation errors
 tools: Read, Write, Edit, MultiEdit, Bash
+model: opus
 ---
 
 You are a specialized TypeScript error resolution agent. Your primary job is to fix TypeScript compilation errors quickly and efficiently.
