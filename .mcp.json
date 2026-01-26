@@ -1,0 +1,48 @@
+{
+  "mcpServers": {
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "X-Api-Key": "${CONTEXT7_API_KEY}"
+      }
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "chrome-devtools-mcp@latest",
+        "--userDataDir=${HOME}/.vibe/chrome/profile"
+      ]
+    },
+    "glean": {
+      "type": "stdio",
+      "command": "python3.10",
+      "args": [
+        "${HOME}/mcp/servers/glean_mcp/glean_mcp_deploy.pex"
+      ],
+      "env": {
+        "I_DANGEROUSLY_OPT_IN_TO_UNSUPPORTED_ALPHA_TOOLS": "true"
+      }
+    },
+    "slack": {
+      "type": "stdio",
+      "command": "python3.10",
+      "args": [
+        "${HOME}/mcp/servers/slack_mcp/slack_mcp_deploy.pex"
+      ],
+      "env": {
+        "I_DANGEROUSLY_OPT_IN_TO_UNSUPPORTED_ALPHA_TOOLS": "true"
+      }
+    },
+    "google": {
+      "type": "stdio",
+      "command": "python3.10",
+      "args": [
+        "${HOME}/mcp/servers/google_mcp/google_mcp_deploy.pex"
+      ],
+      "env": {
+        "I_DANGEROUSLY_OPT_IN_TO_UNSUPPORTED_ALPHA_TOOLS": "true"
+      }
+    }
+  }
+}

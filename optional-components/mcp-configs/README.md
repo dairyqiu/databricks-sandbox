@@ -26,7 +26,20 @@ Claude Code → MCP Server → External Service (GitHub API, Database, etc.)
 
 ## Available Configurations
 
-The [mcp-servers.json](mcp-servers.json) file contains 15 pre-configured MCP servers from everything-claude-code:
+### Databricks-Specific (databricks-mcp.json)
+
+For internal Databricks FE work, see [databricks-mcp.json](databricks-mcp.json):
+- **context7** - Live documentation lookup
+- **chrome-devtools** - Web automation/testing
+- **glean** - Internal knowledge search
+- **slack** - Slack messaging
+- **google** - Google Workspace
+
+These are also pre-configured in the template's `.mcp.json` file. Enable via `enabledMcpjsonServers` in settings.
+
+### Generic Development (mcp-servers.json)
+
+The [mcp-servers.json](mcp-servers.json) file contains pre-configured MCP servers from everything-claude-code:
 
 ### Development Tools
 - **sequential-thinking** - Enhanced reasoning capabilities

@@ -1,0 +1,66 @@
+{
+  "_comment": "Databricks-specific MCP servers - for internal Databricks FE work",
+
+  "mcpServers": {
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "X-Api-Key": "${CONTEXT7_API_KEY}"
+      },
+      "description": "Live documentation lookup for any library"
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "chrome-devtools-mcp@latest",
+        "--userDataDir=${HOME}/.vibe/chrome/profile"
+      ],
+      "description": "Web automation and testing via Chrome DevTools"
+    },
+    "glean": {
+      "type": "stdio",
+      "command": "python3.10",
+      "args": [
+        "${HOME}/mcp/servers/glean_mcp/glean_mcp_deploy.pex"
+      ],
+      "env": {
+        "I_DANGEROUSLY_OPT_IN_TO_UNSUPPORTED_ALPHA_TOOLS": "true"
+      },
+      "description": "Internal Databricks knowledge search"
+    },
+    "slack": {
+      "type": "stdio",
+      "command": "python3.10",
+      "args": [
+        "${HOME}/mcp/servers/slack_mcp/slack_mcp_deploy.pex"
+      ],
+      "env": {
+        "I_DANGEROUSLY_OPT_IN_TO_UNSUPPORTED_ALPHA_TOOLS": "true"
+      },
+      "description": "Slack messaging and channel operations"
+    },
+    "google": {
+      "type": "stdio",
+      "command": "python3.10",
+      "args": [
+        "${HOME}/mcp/servers/google_mcp/google_mcp_deploy.pex"
+      ],
+      "env": {
+        "I_DANGEROUSLY_OPT_IN_TO_UNSUPPORTED_ALPHA_TOOLS": "true"
+      },
+      "description": "Google Workspace (Docs, Sheets, Calendar)"
+    }
+  },
+
+  "_usage": {
+    "copy_to": "Copy individual server configs to your project's .mcp.json or ~/.claude.json",
+    "enable_via": "Add server names to enabledMcpjsonServers in .claude/settings.json",
+    "requirements": {
+      "glean": "Requires ~/mcp/servers/glean_mcp/ setup",
+      "slack": "Requires ~/mcp/servers/slack_mcp/ setup",
+      "google": "Requires ~/mcp/servers/google_mcp/ setup",
+      "context7": "Requires CONTEXT7_API_KEY env var or get from context7.com"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "_comment": "Copy relevant sections to your .claude/settings.json",
+
+  "enabledPlugins": {
+    "_comment_core": "Core Databricks plugins",
+    "fe-databricks-tools@fe-vibe": true,
+    "fe-google-tools@fe-vibe": true,
+    "fe-internal-tools@fe-vibe": true,
+    "fe-jira-tools@fe-vibe": true,
+    "fe-workflows@fe-vibe": true,
+    "github@claude-plugins-official": true,
+
+    "_comment_optional": "Optional - enable as needed",
+    "fe-salesforce-tools@fe-vibe": false,
+    "fe-file-expenses@fe-vibe": false,
+    "fe-specialized-agents@fe-vibe": false
+  },
+
+  "enabledMcpjsonServers": [
+    "context7",
+    "glean",
+    "slack",
+    "google"
+  ],
+
+  "_comment_chrome": "Add 'chrome-devtools' to enabledMcpjsonServers for web testing"
+}
