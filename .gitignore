@@ -51,3 +51,7 @@ temp/
 prisma/.env
 
 legacy-components/
+
+# Claude Code local settings (machine-specific paths)
+.claude/settings.local.json
+.mcp.json

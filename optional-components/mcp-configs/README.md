@@ -37,6 +37,23 @@ For internal Databricks FE work, see [databricks-mcp.json](databricks-mcp.json):
 
 These are also pre-configured in the template's `.mcp.json` file. Enable via `enabledMcpjsonServers` in settings.
 
+#### Glean Tool Usage
+
+**IMPORTANT:** When calling Glean MCP tools, use **snake_case** parameter names:
+
+| Correct | Incorrect |
+|---------|-----------|
+| `page_size` | `pageSize` |
+| `search_query` | `searchQuery` |
+
+Example:
+```json
+{
+  "query": "authentication docs",
+  "page_size": 10
+}
+```
+
 ### Generic Development (mcp-servers.json)
 
 The [mcp-servers.json](mcp-servers.json) file contains pre-configured MCP servers from everything-claude-code:
